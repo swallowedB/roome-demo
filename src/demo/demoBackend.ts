@@ -301,7 +301,7 @@ export const demoBackend = {
 
   deleteTemplate(myCdId: number) {
     delete templates[myCdId];
-    return { deleted: true };
+    return { status: 204 };
   },
 
   getComments(myCdId: number, page = 1, size = 5, keyword = '') {

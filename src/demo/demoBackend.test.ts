@@ -32,3 +32,9 @@ test('moves the CD rack cursor past the last item of the previous page', () => {
 
   assert.notEqual(second.data[0]?.myCdId, first.data[0]?.myCdId);
 });
+
+test('returns the no-content status after deleting a CD template', () => {
+  const result = demoBackend.deleteTemplate(101);
+
+  assert.equal(result.status, 204);
+});
