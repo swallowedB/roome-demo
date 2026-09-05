@@ -1,0 +1,172 @@
+type CdItem = Pick<CDRackItem, 'myCdId' | 'coverUrl' | 'title' | 'artist' | 'album' | 'releaseDate' | 'genres' | 'youtubeUrl' | 'duration'>
+
+type ExtendedCdItem = CdItem & { isPlaceholder?: boolean };
+
+interface CdRackProps {
+  items: CdItem[];
+  isModalOpen?: boolean; 
+}
+
+interface CDRackInfo {
+  data: CDRackItem[];
+  nextCursor: number;
+  totalCount: number;
+  firstMyCdId: number;
+  lastMyCdId: number;
+}
+
+interface CDRackItem {
+  myCdId: number;      
+  title: string;
+  artist: string;
+  album: string;
+  releaseDate: string;  
+  genres: string[];
+  coverUrl: string;
+  youtubeUrl: string;
+  duration: number;    
+}
+
+// cd response body type
+interface CDInfo {
+  myCdId?: number;
+  title: string;
+  artist: string;
+  releaseDate: string;
+  genres: string[];
+  coverUrl: string;
+  youtubeUrl: string;
+  album: string;
+  duration: number;
+}
+
+// cd 검색시 spotify 반환 type
+interface CDSearch {
+  id: string;
+  name: string;
+  artists: { name: string; id: string }[]; // 가수 정보가 배열로 옴
+  album: {
+    name: string;
+    release_date: string;
+    images: { url: string }[]; // 앨범 이미지도 배열
+  };
+  genres: string[];
+  youtubeUrl: string;
+  duration: number;
+}
+
+// cd 검색후 response type
+interface CDSearchResult {
+  id: string;
+  title: string;
+  artist: string;
+  album_title: string;
+  date: string;
+  imageUrl: string;
+  genres: string[];
+  type: 'CD';
+  youtubeUrl: string;
+  duration: number;
+}
+
+// cd 추가시 reqest body type
+interface PostCDInfo {
+  title: string;
+  artist: string;
+  album: string;
+  genres: string[];
+  coverUrl: string;
+  youtubeUrl: string;
+  duration: number;
+  releaseDate: string;
+}
+
+// template type
+interface TemplateData {
+  comment1: string | null;
+  comment2: string | null;
+  comment3: string | null;
+  comment4: string | null;
+}
+
+interface TemplateProps {
+  onToggleEdit: () => void;
+  changeTemplateData: (
+    value: {
+      comment1: string;
+      comment2: string;
+      comment3: string;
+      comment4: string;
+    } | null,
+  ) => void;
+  templateData: TemplateData;
+  questions: { question: string; answer?: string }[];
+}
+
+// cd comments
+
+interface CdComment {
+  id?: number;
+  myCdId: number;
+  userId: number;
+  nickname: string;
+  timestamp: number;
+  content: string;
+  createdAt?: string;
+}
+
+interface CdCommentPost {
+  timestamp: number;
+  content: string;
+}
+
+interface CdReady {
+  isPlaying: boolean;
+  isLooping: boolean;
+  volume: number;
+  previousVolume: number;
+  isMuted: boolean;
+}
+
+interface CdPlayer {
+  progress: number;
+  currentTime: number;
+  duration: number;
+}
+
+interface CdHoverState {
+  hoveredCd: CDRackItem | null;
+  setHoveredCd: (cd: CDRackItem | null) => void;
+
+    phase: number;                  
+  setPhase: (p: number) => void;
+
+  activeIndex: number;          
+  setActiveIndex: (i: number) => void;
+
+}
+
+interface CdDockMenuProps {
+  activeSettings: 'add' | 'delete' | null;
+  onSettingsChange: (setting: 'add' | 'delete') => void;
+  resetState: boolean;
+}
+
+interface CdDeleteModalProps {
+  items: CdItem[];
+  onClose: () => void;
+  onDelete: (ids: number[]) => void;
+}
+
+interface RawCDInfo {
+  id: number;
+  title: string;
+  artist: string;
+  album_title: string;
+  date: string;
+  duration: number;
+  genres: string[];
+  imageUrl: string;
+  type: string;
+  youtubeUrl: string;
+}

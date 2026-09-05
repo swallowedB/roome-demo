@@ -1,0 +1,193 @@
+@import 'tailwindcss';
+/* @import url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff'); */
+
+@theme {
+  /* 폰트 패밀리 */
+  --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Helvetica, 'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Sans KR', 'Apple SD Gothic Neo', '맑은 고딕',
+    'Malgun Gothic';
+
+  --font-jalnan: 'JalnanOTF00', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Helvetica, 'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Sans KR', 'Apple SD Gothic Neo', '맑은 고딕',
+    'Malgun Gothic';
+
+  /* 배경 이미지 */
+  --gradient-book-gradient: linear-gradient(180deg, #73a1f7 0%, #4983ef 100%);
+  --bg-modal: inset 0px 0px 40px 10px rgba(152, 200, 228, 0.3),
+    drop-shadow(0px 10px 20px rgba(62, 80, 125, 0.2));
+
+  /* 그림자 */
+  --drop-shadow-book: 10px 4px 10px rgba(78, 122, 207, 0.15);
+  --drop-shadow-logo: 0px 4px 4px rgba(78, 122, 207, 0.15);
+  --drop-shadow-modal: 0px 10px 10px rgba(38, 86, 205, 0.3);
+
+  /* border */
+  --radius-comment: 14px 14px 0px 14px;
+
+  --animate-slideTitle: slideTitle linear infinite;
+
+  --animate-slowSpin: slowSpin 1.5s linear infinite;
+
+  @keyframes slowSpin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes slideTitle {
+    0% {
+      transform: translateX(100%); /* 화면 오른쪽에서 시작 */
+    }
+    100% {
+      transform: translateX(-100%); /* 화면 왼쪽으로 완전히 사라짐 */
+    }
+  }
+}
+
+@layer components {
+  .item-middle {
+    @apply flex justify-center items-center;
+  }
+
+  .item-left {
+    @apply flex justify-start items-center;
+  }
+
+  .item-around {
+    @apply flex justify-around items-center;
+  }
+
+  .item-between {
+    @apply flex justify-between items-center;
+  }
+  .item-row {
+    @apply flex flex-col justify-center items-center;
+  }
+  .all-200-eio {
+    @apply transition-all duration-200 ease-in-out;
+  }
+  .book-gradient {
+    @apply bg-gradient-to-b from-[#73a1f7] to-[#4983ef];
+  }
+
+  .spring-left-first {
+    @apply absolute z-20 left-[calc(50%-200px-48px)] @2xl:left-[calc(50%-270px-32px)];
+    top: -30px;
+  }
+
+  .spring-left-second {
+    @apply absolute z-20 left-[calc(50%-200px-2px)] @2xl:left-[calc(50%-270px+12px)];
+    top: -30px;
+  }
+
+  .spring-right-first {
+    @apply absolute z-20 right-[calc(50%-200px-48px)] @2xl:right-[calc(50%-270px-32px)];
+    top: -30px;
+  }
+
+  .spring-right-second {
+    @apply absolute z-20 right-[calc(50%-200px-2px)] @2xl:right-[calc(50%-270px+12px)];
+    top: -30px;
+  }
+
+  /* 640px 이하에서만 적용 */
+  @media (max-width: 640px) {
+    .spring-left-first {
+      left: 35px !important;
+      top: -28px !important;
+    }
+
+    .spring-left-second {
+      left: 70px !important;
+      top: -28px !important;
+    }
+
+    .spring-right-first {
+      right: 35px !important;
+      top: -28px !important;
+    }
+
+    .spring-right-second {
+      right: 70px !important;
+      top: -28px !important;
+    }
+  }
+
+  .spring-element {
+    @apply bg-[#73A1F7] rounded-full border-2 border-[#2656CD];
+    width: 28px;
+    height: 64px;
+  }
+
+  @media (min-width: 640px) {
+    .spring-element {
+      width: 28px;
+      height: 64px;
+    }
+
+    /* .guest-book-form {
+      margin-bottom: 24px;
+    } */
+  }
+
+  @media (min-width: 1536px) {
+    .spring-element {
+      width: 32px;
+      height: 80px;
+    }
+  }
+
+  .book-shadow {
+    @apply drop-shadow-[10px_4px_10px_rgba(78,122,207,0.15)];
+  }
+
+  /* 드래그 애니메이션 */
+  .animate-drag {
+    animation: drag 2s ease-in-out infinite;
+  }
+
+  /* 링크 호버 애니메이션 */
+  .link-hover {
+    @apply relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]
+    after:bg-current after:origin-left after:scale-x-0 hover:after:scale-x-100
+    after:transition-transform after:duration-300;
+  }
+
+  @keyframes drag {
+    0%,
+    100% {
+      transform: translateX(-20px);
+    }
+    50% {
+      transform: translateX(20px);
+    }
+  }
+
+  .floating-animation {
+    animation: float 2.5s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0) scale(1) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-30px) scale(1.1) rotate(5deg);
+    }
+  }
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee linear infinite;
+}

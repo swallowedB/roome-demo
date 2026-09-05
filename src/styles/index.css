@@ -1,0 +1,24 @@
+@import './tailwind.css';
+@import './main.css';
+@import './scroll.css';
+@import './swiper.css';
+@import './range.css';
+@import './loading.css';
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+button {
+  cursor: pointer;
+}
+
+html {
+  scroll-behavior: smooth;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/RoomE.svg" />
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <title>RoomE</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <div id="modal-root"></div>
+    <script>
+      (function () {
+        try {
+          var KEY = 'first_referrer';
+          var SENT_KEY = 'first_referrer_sent';
+          if (!sessionStorage.getItem(KEY)) {
+            var ref = document.referrer || 'direct';
+            sessionStorage.setItem(KEY, ref);
+          }
+          // 소셜 리디렉트로 referrer가 프로바이더로 바뀌는 문제 방지용 사전 저장
+        } catch (e) {
+          // storage 접근 불가시 무시
+        }
+      })();
+    </script>
+    <script
+      type="module"
+      src="/src/main.tsx"></script>
+  </body>
+</html>
