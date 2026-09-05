@@ -1,4 +1,6 @@
 import axiosInstance from "./axiosInstance";
+import { demoBackend } from '@/demo/demoBackend';
+import { isDemoMode } from '@/demo/demoMode';
 
 const API_URL = 'api';
 
@@ -10,6 +12,8 @@ export const guestbookAPI = {
     * @param userId 사용자 ID
   */
     deleteGuestbook: async (guestbookId: number, userId: number) => {
+      if (isDemoMode) return demoBackend.deleteGuestbook(guestbookId, userId);
+
       try {
         await axiosInstance.delete(`/${API_URL}/guestbooks/${guestbookId}?userId=${userId}`);
       } catch (error) {
@@ -27,6 +31,8 @@ export const guestbookAPI = {
     * @returns 방명록 데이터
   */
   getGuestbook: async (roomId: number, page: number, size: number) => {
+    if (isDemoMode) return demoBackend.getGuestbook(roomId, page, size);
+
     try{
       const response = await axiosInstance.get(`/${API_URL}/guestbooks/${roomId}`, {
         params: {page, size},
@@ -47,6 +53,8 @@ export const guestbookAPI = {
     * @returns 등록된 방명록 데이터
   */
   createGuestbook: async (roomId:number, userId: number, message:string) => {
+    if (isDemoMode) return demoBackend.createGuestbook(roomId, userId, message);
+
     try{
       const response = await axiosInstance.post(
         `/${API_URL}/guestbooks/${roomId}?userId=${userId}`, 

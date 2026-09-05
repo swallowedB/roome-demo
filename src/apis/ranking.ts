@@ -1,4 +1,6 @@
 import axiosInstance from './axiosInstance';
+import { demoBackend } from '@/demo/demoBackend';
+import { isDemoMode } from '@/demo/demoMode';
 
 const API_URL = 'api';
 
@@ -9,6 +11,8 @@ export const rankAPI = {
    * @returns 상위 10명의 사용자 랭킹 데이터
    */
   getRanking: async () => {
+    if (isDemoMode) return demoBackend.getRanking();
+
     try {
       const response = await axiosInstance.get(`/${API_URL}/rankings`);
       return response.data;
@@ -25,6 +29,8 @@ export const rankAPI = {
    * @param hostId 방문하려는 방 소유자 ID
    */
   visitByUserId: async (visitorId: number, hostId: number) => {
+    if (isDemoMode) return { visitorId, hostId, recorded: false };
+
     try {
       const response = await axiosInstance.post(
         `/${API_URL}/rooms/visit?visitorId=${visitorId}&hostId=${hostId}`,

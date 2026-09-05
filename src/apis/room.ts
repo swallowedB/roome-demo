@@ -1,4 +1,6 @@
 import axiosInstance from './axiosInstance';
+import { demoBackend } from '@/demo/demoBackend';
+import { isDemoMode } from '@/demo/demoMode';
 
 const API_URL = 'api';
 
@@ -10,6 +12,8 @@ export const roomAPI = {
    * @returns 방 정보 데이터
    */
   getRoomById: async (userId: number) => {
+    if (isDemoMode) return demoBackend.getRoom(userId);
+
     try {
       const response = await axiosInstance.get(
         `/${API_URL}/rooms?userId=${userId}`,
@@ -32,6 +36,10 @@ export const roomAPI = {
     userId: number,
     themeName: 'BASIC' | 'FOREST' | 'MARINE',
   ) => {
+    if (isDemoMode) {
+      return demoBackend.updateRoomTheme(roomId, userId, themeName);
+    }
+
     try {
       const response = await axiosInstance.put(
         `/${API_URL}/rooms/${roomId}?userId=${userId}`,
@@ -57,6 +65,14 @@ export const roomAPI = {
     userId: number,
     furnitureType: string,
   ) => {
+    if (isDemoMode) {
+      return demoBackend.toggleFurniture(
+        roomId,
+        userId,
+        furnitureType as 'BOOKSHELF' | 'CD_RACK',
+      );
+    }
+
     try {
       const response = await axiosInstance.put(
         `/${API_URL}/rooms/${roomId}/furniture?userId=${userId}`,
@@ -74,6 +90,8 @@ export const roomAPI = {
    * @param userId 사용자 ID
    */
   getUnlockThemes: async (userId: number) => {
+    if (isDemoMode) return demoBackend.getUnlockThemes();
+
     try {
       const response = await axiosInstance.get(
         `/${API_URL}/rooms/${userId}/unlocked-themes`,
@@ -90,6 +108,8 @@ export const roomAPI = {
    * @param userId 사용자 ID
    */
   purchaseThemes: async (roomId: number, themeName: string) => {
+    if (isDemoMode) return demoBackend.getRoom(roomId);
+
     try {
       const response = await axiosInstance.post(
         `/${API_URL}/rooms/${roomId}/purchase-theme`,{

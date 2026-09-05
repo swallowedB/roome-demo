@@ -1,4 +1,6 @@
 import axiosInstance from './axiosInstance';
+import { demoBackend } from '@/demo/demoBackend';
+import { isDemoMode } from '@/demo/demoMode';
 const API_URL = 'api';
 
 export const getPointHistory = async (
@@ -6,6 +8,10 @@ export const getPointHistory = async (
   itemCursor?: number,
   dayCursor?: string,
 ) => {
+  if (isDemoMode) {
+    return { history: [], balance: 1720, firstId: 0, lastId: 0, nextCursor: null, totalCount: 0 };
+  }
+
   const url = dayCursor
     ? `/${API_URL}/points/history?size=${size}&itemCursor=${itemCursor}&dayCursor=${dayCursor}`
     : `/${API_URL}/points/history?size=${size}&itemCursor=${itemCursor}`;
@@ -17,6 +23,8 @@ export const getPointHistory = async (
  * @returns
  */
 export const getPointBalance = async (userId: number) => {
+  if (isDemoMode) return demoBackend.getPointBalance();
+
   const response = await axiosInstance.get(
     `/${API_URL}/points/balance?userId=${userId}`,
   );

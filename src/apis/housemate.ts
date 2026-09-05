@@ -1,4 +1,6 @@
 import axiosInstance from './axiosInstance';
+import { demoBackend } from '@/demo/demoBackend';
+import { isDemoMode } from '@/demo/demoMode';
 
 const API_URL = 'api';
 
@@ -17,6 +19,8 @@ export const housemateAPI = {
     limit: number = 20,
     nickname?: string,
   ) => {
+    if (isDemoMode) return demoBackend.getFollowing();
+
     const params = new URLSearchParams();
     if (cursor) params.append('cursor', cursor.toString());
     if (limit) params.append('limit', limit.toString());
@@ -42,6 +46,8 @@ export const housemateAPI = {
     limit: number = 20,
     nickname?: string,
   ) => {
+    if (isDemoMode) return { ...demoBackend.getFollowing(), housemates: [] };
+
     const params = new URLSearchParams();
     if (cursor) params.append('cursor', cursor.toString());
     if (limit) params.append('limit', limit.toString());
@@ -64,6 +70,8 @@ export const housemateAPI = {
    * const result = await housemateAPI.followHousemate(1);
    */
   followHousemate: async (targetId: number) => {
+    if (isDemoMode) return { following: true, targetId };
+
     const response = await axiosInstance.post(
       `/${API_URL}/mates/${targetId}`,
     );
@@ -80,6 +88,8 @@ export const housemateAPI = {
    * const result = await housemateAPI.unfollowHousemate(1);
    */
   unfollowHousemate: async (targetId: number) => {
+    if (isDemoMode) return { following: false, targetId };
+
     const response = await axiosInstance.delete(
       `/${API_URL}/mates/${targetId}`,
     );
