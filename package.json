@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
     "test:hive-spatial-index": "tsc --outDir /private/tmp/roome-hive-spatial-index-test --rootDir src --module commonjs --moduleResolution node --target es2020 --esModuleInterop --skipLibCheck --types node --noEmitOnError false src/types/room.d.ts src/pages/main/engine/HiveSpatialIndex.ts src/pages/main/engine/HiveSpatialIndex.test.ts && node --test /private/tmp/roome-hive-spatial-index-test/pages/main/engine/HiveSpatialIndex.test.js",
-    "test:demo": "tsc --outDir /private/tmp/roome-demo-test --rootDir src --module commonjs --moduleResolution node --target es2022 --esModuleInterop --skipLibCheck --types node --noEmitOnError false src/demo/demoEntry.ts src/demo/demoBackend.ts src/demo/demoBackend.test.ts src/apis/musicProxy.ts src/apis/musicProxy.test.ts && node --test /private/tmp/roome-demo-test/demo/demoBackend.test.js /private/tmp/roome-demo-test/apis/musicProxy.test.js"
+    "test:demo": "tsc --outDir /private/tmp/roome-demo-test --rootDir src --module commonjs --moduleResolution node --target es2022 --esModuleInterop --skipLibCheck --types node --noEmitOnError false src/demo/demoEntry.ts src/demo/demoBackend.ts src/demo/demoBackend.test.ts src/apis/musicProxy.ts src/apis/musicProxy.test.ts && node --test /private/tmp/roome-demo-test/demo/demoBackend.test.js /private/tmp/roome-demo-test/apis/musicProxy.test.js",
+    "test:music-functions": "tsc --outDir /private/tmp/roome-demo-music-functions-test --rootDir . --module commonjs --moduleResolution node --target es2022 --lib es2022,dom --esModuleInterop --skipLibCheck --types node --noEmitOnError false functions/api/music/_shared.ts functions/api/music/search.ts functions/api/music/video.ts functions/api/music/musicFunctions.test.ts && node --test /private/tmp/roome-demo-music-functions-test/functions/api/music/musicFunctions.test.js"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
