@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { isDemoMode } from '@/demo/demoMode';
 
 type FurnitureType = "BOOKSHELF" | "CD_RACK" | "PIGGY_BANK" | "GUEST_BOOK";
 
@@ -48,6 +49,7 @@ export function useRoomItems(roomData: { roomId: number; furnitures?: { furnitur
     }
 
     const visibleItems = defaultItems.filter((item) => {
+      if (isDemoMode && item.type === 'PIGGY_BANK') return false;
       if (!item.isEditable) return true;
 
       const apiItem = roomData.furnitures.find(

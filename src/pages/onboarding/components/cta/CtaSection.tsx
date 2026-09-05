@@ -2,6 +2,7 @@ import React from 'react';
 import SectionTitle from '../SectionTitle';
 import CtaButton from '../CtaButton';
 import ctaBackground from '@/assets/onboarding/cta-background.png';
+import { isDemoMode } from '@/demo/demoMode';
 
 const CtaSection = () => {
   return (
@@ -13,9 +14,17 @@ const CtaSection = () => {
       />
       <div className='relative z-10'>
         <SectionTitle
-          lowerTitle='이제, 당신의 방을 만들어볼 차례예요'
+          lowerTitle={
+            isDemoMode
+              ? 'RoomE 포트폴리오 데모를 둘러보세요'
+              : '이제, 당신의 방을 만들어볼 차례예요'
+          }
           lowerTitleClassName='text-2xl sm:text-3xl md:text-4xl lg:text-5xl'
-          description='소셜 로그인으로 간편하게 RoomE를 이용해보세요!'
+          description={
+            isDemoMode
+              ? '저장한 내용은 새로고침하면 초기화됩니다.'
+              : '소셜 로그인으로 간편하게 RoomE를 이용해보세요!'
+          }
           descriptionClassName='text-base sm:text-lg md:text-xl lg:text-2xl'
         />
         <CtaButton />

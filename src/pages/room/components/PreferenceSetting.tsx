@@ -3,6 +3,7 @@ import bookImg from '@assets/room/book.png';
 import { useRef } from 'react';
 import { useClickOutside } from '../../../hooks/useClickOutside';
 import PreferenceSettingCard from './PreferenceSettingCard';
+import { isDemoMode } from '@/demo/demoMode';
 
 export default function PreferenceSetting({
   storageData,
@@ -47,17 +48,19 @@ export default function PreferenceSetting({
             isAdd={furnitures[1].isVisible}
             onClick={() => onFurnitureToggle('CD_RACK')}
           />
-          <PreferenceSettingCard
-            title={'도서'}
-            level={bookshelfLevel}
-            genres={bookGenres}
-            thumbnail={bookImg}
-            maxCount={storageData.maxBooks}
-            savedCount={storageData.savedBooks}
-            writtenCount={storageData.writtenReviews}
-            isAdd={furnitures[0].isVisible}
-            onClick={() => onFurnitureToggle('BOOKSHELF')}
-          />
+          {!isDemoMode && (
+            <PreferenceSettingCard
+              title={'도서'}
+              level={bookshelfLevel}
+              genres={bookGenres}
+              thumbnail={bookImg}
+              maxCount={storageData.maxBooks}
+              savedCount={storageData.savedBooks}
+              writtenCount={storageData.writtenReviews}
+              isAdd={furnitures[0].isVisible}
+              onClick={() => onFurnitureToggle('BOOKSHELF')}
+            />
+          )}
         </div>
       </div>
     </div>

@@ -7,5 +7,3 @@ export const DEMO_USER = {
   roomId: 5001,
   userId: 101,
 };
-
-export const getEntryPath = (demo: boolean) => (demo ? '/' : '/login');

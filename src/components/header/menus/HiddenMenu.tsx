@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useUserStore } from '../../../store/useUserStore';
 import { useClickOutside } from '../../../hooks/useClickOutside';
 import PowerIcon from '@assets/power-icon.svg?react';
+import { isDemoMode } from '@/demo/demoMode';
 
 interface HiddenMenuProps {
   isOpen: boolean;
@@ -67,19 +68,22 @@ const HiddenMenu = ({
                 나의 룸
               </Link>
             </li>
-            <li>
-              <button
-                onClick={() => {
-                  onClose();
-                  if (user) {
-                    navigate(`/profile/${user.userId}`);
-                  }
-                }}
-                className='w-full px-4 py-3 text-center border-b border-gray-100  text-[#2E4D99]/50 hover:text-[#2E4D99] transition-colors'>
-                내 프로필
-              </button>
-            </li>
-            {isMobile &&
+            {!isDemoMode && (
+              <li>
+                <button
+                  onClick={() => {
+                    onClose();
+                    if (user) {
+                      navigate(`/profile/${user.userId}`);
+                    }
+                  }}
+                  className='w-full px-4 py-3 text-center border-b border-gray-100  text-[#2E4D99]/50 hover:text-[#2E4D99] transition-colors'>
+                  내 프로필
+                </button>
+              </li>
+            )}
+            {!isDemoMode &&
+              isMobile &&
               housemateButtonRef &&
               toggleHousemateModal &&
               housemateIcon && (
@@ -106,11 +110,13 @@ const HiddenMenu = ({
             </li>
             <li>
               <button
-                onClick={handleLogout}
+                onClick={
+                  isDemoMode ? () => window.location.reload() : handleLogout
+                }
                 type='button'
                 className='w-full py-3 flex items-center justify-center gap-1 text-[#2E4D99]/50 hover:text-[#2E4D99] group transition-colors select-none'>
                 <PowerIcon className='w-5 h-5' />
-                로그아웃
+                {isDemoMode ? '데모 처음부터 보기' : '로그아웃'}
               </button>
             </li>
           </ul>

@@ -14,6 +14,7 @@ import { useToastStore } from '@/store/useToastStore';
 import { webSocketService } from '@/apis/websocket';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useWindowSize } from '@/hooks/useWindowSize';
+import { isDemoMode } from '@/demo/demoMode';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,6 +32,11 @@ const Header = () => {
   const accessToken = useAuthStore((state) => state.accessToken);
 
   useEffect(() => {
+    if (isDemoMode) {
+      setIsConnecting(false);
+      return;
+    }
+
     // 1. 이벤트 리스너 설정
     const eventListeners = new Map([
       ['newNotification', handleNewNotification],
@@ -175,43 +181,30 @@ const Header = () => {
         </button>
         {/* 네비게이션 */}
         <nav className='gap-4 pointer-events-auto item-row'>
-          <button
-            ref={notificationButtonRef}
-            type='button'
-            aria-label='알림'
-            onClick={toggleNotificationModal}
-            className='relative cursor-pointer'>
-            {renderNotificationIcon()}
-            <div className='absolute top-[2.5px] right-[5.7px]'>
-              {/* 기본 알림 점 */}
-              <div
-                className={`w-2 h-2 bg-[#FF4A9E] rounded-full z-50 ${
-                  isNewNotification ? 'animate-ping' : ''
-                }`}
-                style={{
-                  display:
-                    hasUnreadNotifications || isNewNotification
-                      ? 'block'
-                      : 'none',
-                }}
-              />
-              {/* 네온 효과 */}
-              {/* <div
-                className={`absolute top-0 right-0 w-2 h-2 rounded-full z-40
-                  ${
-                    isNewNotification ? 'animate-notification-glow' : ''} before:content-[''] before:absolute before:-inset-4 before:bg-gradient-radial before:from-orange-500/40 before:via-orange-500/20 before:to-transparent before:rounded-full before:blur-sm`}
-                style={{
-                  opacity: isNewNotification ? 1 : 0,
-                  transition: 'opacity 300ms ease-in-out',
-                }}
-              /> */}
-            </div>
-            <div className='hidden'>
-              hasUnread: {hasUnreadNotifications.toString()}, isNew:{' '}
-              {isNewNotification.toString()}
-            </div>
-          </button>
-          {!isMobile && (
+          {!isDemoMode && (
+            <button
+              ref={notificationButtonRef}
+              type='button'
+              aria-label='알림'
+              onClick={toggleNotificationModal}
+              className='relative cursor-pointer'>
+              {renderNotificationIcon()}
+              <div className='absolute top-[2.5px] right-[5.7px]'>
+                <div
+                  className={`w-2 h-2 bg-[#FF4A9E] rounded-full z-50 ${
+                    isNewNotification ? 'animate-ping' : ''
+                  }`}
+                  style={{
+                    display:
+                      hasUnreadNotifications || isNewNotification
+                        ? 'block'
+                        : 'none',
+                  }}
+                />
+              </div>
+            </button>
+          )}
+          {!isDemoMode && !isMobile && (
             <button
               ref={housemateButtonRef}
               type='button'
@@ -252,17 +245,21 @@ const Header = () => {
           </div>
         </nav>
       </header>
-      <HousemateModal
-        isOpen={isHousemateModalOpen}
-        onClose={() => setIsHousemateModalOpen(false)}
-        buttonRef={housemateButtonRef}
-      />
-      <NotificationModal
-        isOpen={isNotificationModalOpen}
-        onClose={() => setIsNotificationModalOpen(false)}
-        buttonRef={notificationButtonRef}
-        onNotificationStatusChange={updateNotificationStatus}
-      />
+      {!isDemoMode && (
+        <>
+          <HousemateModal
+            isOpen={isHousemateModalOpen}
+            onClose={() => setIsHousemateModalOpen(false)}
+            buttonRef={housemateButtonRef}
+          />
+          <NotificationModal
+            isOpen={isNotificationModalOpen}
+            onClose={() => setIsNotificationModalOpen(false)}
+            buttonRef={notificationButtonRef}
+            onNotificationStatusChange={updateNotificationStatus}
+          />
+        </>
+      )}
     </>
   );
 };

@@ -1,6 +1,12 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { demoBackend } from './demoBackend';
+import { getEntryPath } from './demoEntry';
+
+test('uses the hive as the public demo entry point', () => {
+  assert.equal(getEntryPath(true), '/');
+  assert.equal(getEntryPath(false), '/login');
+});
 
 test('adds a CD to the current demo-session rack', () => {
   const before = demoBackend.getCdRack(101, 20, 0);

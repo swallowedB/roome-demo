@@ -1,5 +1,7 @@
 import Header from '@components/header/Header';
 import { Outlet } from 'react-router-dom';
+import DemoNotice from '@components/DemoNotice';
+import { isDemoMode } from '@/demo/demoMode';
 
 interface BaseLayoutProps {
   hasHeader?: boolean;
@@ -12,6 +14,7 @@ const BaseLayout = ({ hasHeader = true }: BaseLayoutProps) => {
         <Outlet />
       </main>
       {hasHeader && <Header />}
+      {hasHeader && isDemoMode && <DemoNotice />}
     </div>
   );
 };
