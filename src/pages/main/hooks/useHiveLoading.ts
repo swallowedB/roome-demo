@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { hasInitialHiveSceneLoaded } from '../engine/HiveLoading';
 
 export default function useHiveLoading(
   initialRoomIds: string[],
@@ -27,7 +28,7 @@ export default function useHiveLoading(
   useEffect(() => {
     const isInitialBatchLoaded =
       hasInitialVisibleBatch &&
-      initialRoomIds.every((roomId) => loadedRooms.has(roomId));
+      hasInitialHiveSceneLoaded(initialRoomIds, loadedRooms);
 
     if (isInitialBatchLoaded && !completedInitialBatchRef.current) {
       completedInitialBatchRef.current = true;

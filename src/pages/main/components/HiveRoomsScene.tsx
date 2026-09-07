@@ -7,6 +7,7 @@ import {
   haveSameMembers,
   HiveSpatialIndex,
 } from '@pages/main/engine/HiveSpatialIndex';
+import { shouldKeepHiveRoomMounted } from '@pages/main/engine/HiveVisibility';
 import {
   HIVE_ROOM_DEPTH_STEP,
   HIVE_ROOM_VERTICAL_STEP,
@@ -25,7 +26,7 @@ interface HiveRoomsSceneProps {
   onInitialVisibleRoomIds: (roomIds: string[]) => void;
 }
 
-const PREFETCH_MARGIN_WORLD = 3;
+const RENDER_MARGIN_WORLD = HIVE_ROOM_WIDTH * 2;
 const ROOM_GRID_PLANE = new THREE.Plane().setFromCoplanarPoints(
   new THREE.Vector3(0, 0, 0),
   new THREE.Vector3(HIVE_ROOM_WIDTH, 0, 0),
@@ -115,10 +116,10 @@ export default function HiveRoomsScene({
     const maxZ = Math.max(TL.z, TR.z, BL.z, BR.z);
 
     const items = index.queryRange(
-      minX - PREFETCH_MARGIN_WORLD,
-      maxX + PREFETCH_MARGIN_WORLD,
-      minZ - PREFETCH_MARGIN_WORLD,
-      maxZ + PREFETCH_MARGIN_WORLD,
+      minX - RENDER_MARGIN_WORLD,
+      maxX + RENDER_MARGIN_WORLD,
+      minZ - RENDER_MARGIN_WORLD,
+      maxZ + RENDER_MARGIN_WORLD,
     );
 
     const nextVisible = new Set<number>();
@@ -137,14 +138,16 @@ export default function HiveRoomsScene({
       );
 
       const inMargin =
-        x >= minX - PREFETCH_MARGIN_WORLD &&
-        x <= maxX + PREFETCH_MARGIN_WORLD &&
-        z >= minZ - PREFETCH_MARGIN_WORLD &&
-        z <= maxZ + PREFETCH_MARGIN_WORLD;
+        x >= minX - RENDER_MARGIN_WORLD &&
+        x <= maxX + RENDER_MARGIN_WORLD &&
+        z >= minZ - RENDER_MARGIN_WORLD &&
+        z <= maxZ + RENDER_MARGIN_WORLD;
 
-      if (inView) {
+      if (shouldKeepHiveRoomMounted(inView, inMargin)) {
         nextVisible.add(idx);
-      } else if (inMargin) {
+      }
+
+      if (inMargin) {
         const path = room.modelPath ?? modelPath;
         if (path) nextPrefetch.add(path);
       }

@@ -1,11 +1,13 @@
 import { AnimatePresence } from 'framer-motion';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { useUserStore } from '../../store/useUserStore';
 import AnimationGuide from '../../components/AnimationGuide';
 import RankingModal from './components/RankingModal';
 import MyRoomBtn from './components/MyRoomBtn';
 import RankMenu from './components/RankMenu';
-import HiveRooms from './components/HiveRooms';
+import { DelayedLoading } from '../../components/Loading';
+
+const HiveRooms = lazy(() => import('./components/HiveRooms'));
 
 export default function MainPage() {
   const [isRankingOpen, setIsRankingOpen] = useState(false);
@@ -33,14 +35,16 @@ export default function MainPage() {
   return (
     <main className='@container main-background w-full min-h-screen relative overflow-hidden'>
       {/* 메인 벌집 구조의 방 */}
-      <HiveRooms
-        myUserId={user?.userId}
-        onLoadingComplete={handleLoadingComplete}
-      />
+      <Suspense fallback={<DelayedLoading overlay />}>
+        <HiveRooms
+          myUserId={user?.userId}
+          onLoadingComplete={handleLoadingComplete}
+        />
+      </Suspense>
 
       {/* 하단 버튼 */}
       <RankMenu onOpen={() => setIsRankingOpen(true)} />
-      <MyRoomBtn roomId={user?.roomId} />
+      {user && <MyRoomBtn user={user} />}
 
       {/* 랭킹 모달 */}
       <AnimatePresence>

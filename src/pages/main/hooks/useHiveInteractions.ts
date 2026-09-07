@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import { NavigateFunction } from 'react-router-dom';
+import { navigateToRoom } from '@/demo/demoEntry';
 
 export default function useHiveInteractions(
   rooms: Room[],
@@ -23,7 +24,7 @@ export default function useHiveInteractions(
       if (distance < tapThreshold) {
         const room = rooms[roomIndex];
         if (room?.userId) {
-          navigate(`/room/${room.userId}`);
+          navigateToRoom(navigate, room);
         }
       }
       startPos.current = null;

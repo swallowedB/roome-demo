@@ -3,10 +3,11 @@ import useHiveInteractions from '@pages/main/hooks/useHiveInteractions';
 import useHiveLoading from '@pages/main/hooks/useHiveLoading';
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as THREE from 'three';
-import Loading from '../../../components/Loading';
+import { DelayedLoading } from '../../../components/Loading';
 import { RoomLighting } from '../../../components/room-models/RoomLighting';
 import useHexagonGrid from '../hooks/useHexagonGrid';
 import useRooms from '../hooks/useRooms';
@@ -63,7 +64,7 @@ export default function HiveRooms({
 
   return (
     <div className='w-full h-screen relative'>
-      {isLoading && <Loading />}
+      {isLoading && <DelayedLoading overlay />}
       <Canvas
         camera={{ position: [0, 4, 10], fov: 25 }}
         shadows>
@@ -98,24 +99,32 @@ export default function HiveRooms({
           }}
         />
       </Canvas>
-      {hoveredIndex !== null && (
-        <div
-          className='absolute bottom-22 left-1/2 transform -translate-x-1/2 font-medium z-30'
-          style={{
-            padding: '8px 20px',
-            background: 'rgba(47, 71, 131, 0.4)',
-            backdropFilter: 'blur(10px)',
-            color: 'white',
-            borderRadius: '40px',
-            fontSize: '14px',
-            pointerEvents: 'none',
-            whiteSpace: 'nowrap',
-            opacity: hoveredIndex !== null ? 1 : 0,
-            transition: 'opacity 0.2s ease-in-out',
-          }}>
-          {`✊🏻 똑똑! ${rooms[hoveredIndex]?.nickname}의 방에 들어가실래요?`}
-        </div>
-      )}
+      <AnimatePresence>
+        {hoveredIndex !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className='absolute bottom-22 left-1/2 transform -translate-x-1/2 font-medium z-30'
+            style={{
+              padding: '8px 20px',
+              background: 'rgba(47, 71, 131, 0.4)',
+              backdropFilter: 'blur(10px)',
+              color: 'white',
+              borderRadius: '40px',
+              fontSize: '14px',
+              pointerEvents: 'none',
+              whiteSpace: 'nowrap',
+            }}>
+            ✊🏻 똑똑!{' '}
+            <span className='font-semibold text-[#BFE6FF]'>
+              {rooms[hoveredIndex]?.nickname}
+            </span>
+            의 방에 들어가실래요?
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
