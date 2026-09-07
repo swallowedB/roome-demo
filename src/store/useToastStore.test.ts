@@ -4,11 +4,13 @@ import { useToastStore } from './useToastStore';
 
 type ToastOptions = {
   description?: string;
+  dismissible?: boolean;
   duration?: number;
 };
 
 type ToastStateWithDescription = {
   description: string | null;
+  dismissible: boolean;
   hideToast: () => void;
   showToast: (
     message: string,
@@ -30,6 +32,21 @@ test('keeps the demo reset notice as a toast description', () => {
     (useToastStore.getState() as unknown as ToastStateWithDescription)
       .description,
     '변경사항은 새로고침하면 초기화됩니다.',
+  );
+
+  store.hideToast();
+});
+
+test('makes newly shown toasts dismissible by default', () => {
+  const store = useToastStore.getState() as unknown as ToastStateWithDescription;
+  store.hideToast();
+
+  store.showToast('가구 설정이 변경됐어요!', 'success');
+
+  assert.equal(
+    (useToastStore.getState() as unknown as ToastStateWithDescription)
+      .dismissible,
+    true,
   );
 
   store.hideToast();
