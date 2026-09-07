@@ -1,10 +1,10 @@
 import { themeData } from '@constants/roomTheme';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { startTransition, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { rankAPI } from '../../apis/ranking';
 import { roomAPI } from '../../apis/room';
-import Loading from '../../components/Loading';
+import { DelayedLoading } from '../../components/Loading';
 import { ANIMATION_VARIANTS } from '../../constants/animation';
 import { SIGN_VARIANTS } from '../../constants/sign';
 import { useToastStore } from '../../store/useToastStore';
@@ -13,11 +13,15 @@ import DockMenu from './components/DockMenu';
 import PreferenceSetting from './components/PreferenceSetting';
 import RoomModel from './components/RoomModel';
 import ThemeSetting from './components/ThemeSetting';
+import NotFoundPage from '../NotFoundPage';
+import { shouldShowInitialRoomLoading } from './roomRendering';
 
 export default function RoomPage() {
   const { showToast } = useToastStore();
   const { userId } = useParams<{ userId: string }>();
   const [isModelLoading, setIsModelLoading] = useState(true);
+  const [hasRenderedScene, setHasRenderedScene] = useState(false);
+  const [isRoomUnavailable, setIsRoomUnavailable] = useState(false);
   const [roomData, setRoomData] = useState<RoomData>(null);
   const [activeSettings, setActiveSettings] = useState<string | null>(null);
   const [resetDockMenuState, setResetDockMenuState] = useState(false);
@@ -44,48 +48,65 @@ export default function RoomPage() {
     }
   };
 
-  const fetchRoomData = async (id: number) => {
-    try {
-      const roomData: RoomData = await roomAPI.getRoomById(id);
-      if (roomData) {
-        setRoomData(roomData);
-        setSelectedTheme(roomData.theme as 'BASIC' | 'FOREST' | 'MARINE');
-        setVisibleFurnitures(
-          roomData.furnitures.filter((furniture) => furniture.isVisible),
-        );
-
-        setStorageData({
-          ...roomData.storageLimits,
-          ...roomData.userStorage,
-        });
-      }
-    } catch (error) {
-      console.error('방 정보 불러오기 실패:', error);
-    }
-  };
-
   useEffect(() => {
     if (!userId) return;
+
+    let isCurrentRequest = true;
+    setRoomData(null);
+    setIsRoomUnavailable(false);
+    setIsModelLoading(true);
+    setHasRenderedScene(false);
 
     const loadRoom = async () => {
       if (user && Number(userId) !== user.userId) {
         await recordVisit(user.userId, Number(userId));
       }
-      await fetchRoomData(Number(userId));
+
+      try {
+        const nextRoomData: RoomData = await roomAPI.getRoomById(
+          Number(userId),
+        );
+        if (!nextRoomData) throw new Error('room not found');
+        if (!isCurrentRequest) return;
+
+        setRoomData(nextRoomData);
+        setSelectedTheme(nextRoomData.theme as 'BASIC' | 'FOREST' | 'MARINE');
+        setVisibleFurnitures(
+          nextRoomData.furnitures.filter((furniture) => furniture.isVisible),
+        );
+        setStorageData({
+          ...nextRoomData.storageLimits,
+          ...nextRoomData.userStorage,
+        });
+      } catch (error) {
+        console.error('방 정보 불러오기 실패:', error);
+        if (!isCurrentRequest) return;
+
+        setIsRoomUnavailable(true);
+        setIsModelLoading(false);
+      }
     };
 
     loadRoom();
+
+    return () => {
+      isCurrentRequest = false;
+    };
   }, [userId, user]);
 
-  const handleModelLoaded = () => {
-    setTimeout(() => {
-      setIsModelLoading(false);
-    }, 300); 
-  };
+  if (isRoomUnavailable) return <NotFoundPage />;
 
-  const handleThemeChange = (newTheme: 'BASIC' | 'FOREST' | 'MARINE') => {
-    setSelectedTheme(newTheme);
-  };
+  const handleModelLoaded = useCallback(() => {
+    setHasRenderedScene(true);
+    setIsModelLoading(false);
+  }, []);
+
+  const handleThemeChange = useCallback(
+    (newTheme: 'BASIC' | 'FOREST' | 'MARINE') => {
+      startTransition(() => setSelectedTheme(newTheme));
+    },
+    [],
+  );
 
   const handleSaveTheme = async () => {
     try {
@@ -168,7 +189,13 @@ export default function RoomPage() {
 
   return (
     <main className='overflow-hidden relative w-full min-h-screen main-background'>
-      <AnimatePresence>{isModelLoading && <Loading />}</AnimatePresence>
+      <DelayedLoading
+        isLoading={shouldShowInitialRoomLoading(
+          isModelLoading,
+          hasRenderedScene,
+        )}
+        overlay
+      />
       {roomData && (
         <>
           <RoomModel

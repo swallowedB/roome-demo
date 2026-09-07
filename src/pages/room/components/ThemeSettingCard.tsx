@@ -12,17 +12,17 @@ export default function ThemeSettingCard({
   return (
     <div
       onClick={onClick}
-      className={`backdrop-blur-2xl rounded-2xl border-2 border-[#FCF7FD]
+      className={`backdrop-blur-2xl rounded-2xl border-2
     drop-shadow-modal flex items-center justify-center
     p-1.5 transition-all duration-300 ease-in-out
     w-full max-w-[252px] min-w-[190px]
     h-auto md:h-68 lg:h-74
     ${
       isSelected
-        ? 'scale-100 opacity-100 bg-[#FCF7FD]/20'
+        ? 'border-4 border-[#4983EF] scale-100 opacity-100 bg-[#FCF7FD]/20'
         : isLocked
-        ? 'scale-90 hover:scale-98 hover:opacity-90 cursor-pointer bg-[#D8E5FF]/50'
-        : 'scale-90 opacity-70 hover:scale-98 hover:opacity-90 bg-[#FCF7FD]/20'
+        ? 'border-[#FCF7FD] scale-90 hover:scale-98 hover:opacity-90 cursor-pointer bg-[#D8E5FF]/50'
+        : 'border-[#FCF7FD] scale-90 opacity-70 hover:scale-98 hover:opacity-90 bg-[#FCF7FD]/20'
     }
     w-full md:w-[200px] lg:w-[220px] 
   `}>

@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { isDemoMode } from '@/demo/demoMode';
 
 type FurnitureType = "BOOKSHELF" | "CD_RACK" | "PIGGY_BANK" | "GUEST_BOOK";
 
@@ -42,28 +41,32 @@ const defaultItems: FurnitureData[] = [
   },
 ];
 
-export function useRoomItems(roomData: { roomId: number; furnitures?: { furnitureType: FurnitureType; isVisible: boolean }[] } | null) {
-  const items = useMemo(() => {
-    if (!roomData || !roomData.furnitures) {
-      return defaultItems;
-    }
+type RoomItemsInput = {
+  roomId: number;
+  furnitures?: { furnitureType: FurnitureType; isVisible: boolean }[];
+} | null;
 
-    const visibleItems = defaultItems.filter((item) => {
-      if (isDemoMode && item.type === 'PIGGY_BANK') return false;
-      if (!item.isEditable) return true;
+export const getRoomItems = (roomData: RoomItemsInput) => {
+  if (!roomData || !roomData.furnitures) return defaultItems;
 
-      const apiItem = roomData.furnitures.find(
-        (furniture) => furniture.furnitureType === item.apiType
-      );
+  const visibleItems = defaultItems.filter((item) => {
+    if (!item.isEditable) return true;
 
-      return apiItem?.isVisible;
-    });
+    const apiItem = roomData.furnitures.find(
+      (furniture) => furniture.furnitureType === item.apiType,
+    );
 
-    return visibleItems.map((item) => ({
-      ...item,
-      id: `${item.id}-${roomData.roomId}`,
-    }));
-  }, [roomData]);
+    return apiItem?.isVisible;
+  });
+
+  return visibleItems.map((item) => ({
+    ...item,
+    id: `${item.id}-${roomData.roomId}`,
+  }));
+};
+
+export function useRoomItems(roomData: RoomItemsInput) {
+  const items = useMemo(() => getRoomItems(roomData), [roomData]);
 
   return { items, allItemConfigs: defaultItems };
 }

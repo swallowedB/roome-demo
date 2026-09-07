@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import dockMenuIcon from '@assets/room/dockmenu-icon.svg';
 import dockMenuNoselectIcon from '@assets/room/dockmenu-noSelect-icon.svg';
+import DesktopActionRail from '@components/DesktopActionRail';
 import preferenceNoselectIcon from '@assets/room/preference-noselect-Icon.svg';
 import preferenceIcon from '@assets/room/preferenceIcon.svg';
 import themeNoselectIcon from '@assets/room/theme-noselect-Icon.svg';
 import themeIcon from '@assets/room/themeIcon.svg';
+import { useWindowSize } from '@hooks/useWindowSize';
 
 export default function DockMenu({
   activeSettings,
@@ -14,6 +16,7 @@ export default function DockMenu({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hasSelectedSetting, setHasSelectedSetting] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { width } = useWindowSize();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -86,6 +89,48 @@ export default function DockMenu({
   const showDefaultIcon = () => {
     return !hasSelectedSetting || isOpen || (activeSettings && !isOpen);
   };
+
+  if (width >= 1280) {
+    return (
+      <DesktopActionRail
+        ariaLabel='내 방 설정'
+        actions={[
+          {
+            id: 'preference',
+            label: '취향 설정하기',
+            isActive: activeSettings === 'preference',
+            onClick: () => handleSettingClick('preference'),
+            icon: (
+              <img
+                className='h-[22px] w-[22px]'
+                src={
+                  activeSettings === 'preference'
+                    ? preferenceIcon
+                    : preferenceNoselectIcon
+                }
+                alt=''
+              />
+            ),
+          },
+          {
+            id: 'theme',
+            label: '테마 설정하기',
+            isActive: activeSettings === 'theme',
+            onClick: () => handleSettingClick('theme'),
+            icon: (
+              <img
+                className='h-[22px] w-[22px]'
+                src={
+                  activeSettings === 'theme' ? themeIcon : themeNoselectIcon
+                }
+                alt=''
+              />
+            ),
+          },
+        ]}
+      />
+    );
+  }
 
   return (
     <div

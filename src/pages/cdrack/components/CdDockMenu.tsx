@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import CdAddIcon from '../../../components/icons/CdAddIcon';
 import CdListIcon from '../../../components/icons/CdListIcon';
+import DesktopActionRail from '../../../components/DesktopActionRail';
 import DockMenuIcon from '../../../components/icons/DockMenuIcon';
+import { useWindowSize } from '../../../hooks/useWindowSize';
 
 export default function CdDockMenu({
   activeSettings,
@@ -10,6 +12,7 @@ export default function CdDockMenu({
 }: CdDockMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { width } = useWindowSize();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -26,6 +29,46 @@ export default function CdDockMenu({
       setIsOpen(false);
     }
   }, [resetState]);
+
+  if (width >= 1280) {
+    return (
+      <DesktopActionRail
+        ariaLabel='플레이리스트 편집'
+        actions={[
+          {
+            id: 'add',
+            label: '새 음악 추가하기',
+            isActive: activeSettings === 'add',
+            onClick: () => onSettingsChange('add'),
+            icon: (
+              <CdAddIcon
+                className={`h-8 w-8 text-white transition-opacity ${
+                  activeSettings === 'add'
+                    ? 'opacity-100'
+                    : 'opacity-40 group-hover:opacity-100'
+                }`}
+              />
+            ),
+          },
+          {
+            id: 'delete',
+            label: '음악 삭제하기',
+            isActive: activeSettings === 'delete',
+            onClick: () => onSettingsChange('delete'),
+            icon: (
+              <CdListIcon
+                className={`h-8 w-8 text-white transition-opacity ${
+                  activeSettings === 'delete'
+                    ? 'opacity-100'
+                    : 'opacity-40 group-hover:opacity-100'
+                }`}
+              />
+            ),
+          },
+        ]}
+      />
+    );
+  }
 
   return (
     <div

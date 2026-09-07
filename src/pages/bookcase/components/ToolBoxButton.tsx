@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import ToolBoxIcon from '@assets/book/bookcase-tool-icon.svg';
+import DesktopActionRail from '@components/DesktopActionRail';
 import AddBookIcon from './AddBookIcon';
 import BookListIcon from './BookListIcon';
+import { useWindowSize } from '@hooks/useWindowSize';
 
 interface ToolBoxButtonProps {
   onAddBook: () => void;
@@ -17,6 +19,7 @@ const ToolBoxButton = ({
   const [isOpen, setIsOpen] = useState(false);
   const hasSelectedSetting = useRef(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { width } = useWindowSize();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -40,6 +43,42 @@ const ToolBoxButton = ({
     }
     return 'bg-transparent hover:bg-white/50';
   };
+
+  if (width >= 1280) {
+    return (
+      <DesktopActionRail
+        ariaLabel='도서 도구'
+        actions={[
+          {
+            id: 'list',
+            label: '목록 보러가기',
+            onClick: onOpenList,
+            icon: (
+              <BookListIcon
+                fill='white'
+                className='group-hover:fill-[#73A1F7] transition-colors'
+              />
+            ),
+          },
+          ...(!isOtherUserBookcase
+            ? [
+                {
+                  id: 'add',
+                  label: '도서 추가하기',
+                  onClick: onAddBook,
+                  icon: (
+                    <AddBookIcon
+                      fill='white'
+                      className='group-hover:fill-[#73A1F7] transition-colors'
+                    />
+                  ),
+                },
+              ]
+            : []),
+        ]}
+      />
+    );
+  }
 
   return (
     <div

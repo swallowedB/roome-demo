@@ -3,7 +3,6 @@ import bookImg from '@assets/room/book.png';
 import { useRef } from 'react';
 import { useClickOutside } from '../../../hooks/useClickOutside';
 import PreferenceSettingCard from './PreferenceSettingCard';
-import { isDemoMode } from '@/demo/demoMode';
 
 export default function PreferenceSetting({
   storageData,
@@ -32,11 +31,10 @@ export default function PreferenceSetting({
         ref={modalRef}
         className='setting-gradient 
           w-full
-          h-auto md:h-110 2xl:h-110
-          bottom-[calc(env(safe-area-inset-bottom)+80px)] md:bottom-auto
-          px-17 md:p-6'>
+          h-auto md:h-[330px] 2xl:h-[418px]
+          px-17 md:p-6 md:flex md:items-center md:justify-center'>
         <div className='flex flex-col items-start md:items-center
-          justify-center md:flex-row gap-4 md:gap-10 mb-35  '>
+          justify-center md:flex-row gap-4 md:gap-10 mb-10 md:mb-0'>
           <PreferenceSettingCard
             title={'음악'}
             level={cdRackLevel}
@@ -48,19 +46,17 @@ export default function PreferenceSetting({
             isAdd={furnitures[1].isVisible}
             onClick={() => onFurnitureToggle('CD_RACK')}
           />
-          {!isDemoMode && (
-            <PreferenceSettingCard
-              title={'도서'}
-              level={bookshelfLevel}
-              genres={bookGenres}
-              thumbnail={bookImg}
-              maxCount={storageData.maxBooks}
-              savedCount={storageData.savedBooks}
-              writtenCount={storageData.writtenReviews}
-              isAdd={furnitures[0].isVisible}
-              onClick={() => onFurnitureToggle('BOOKSHELF')}
-            />
-          )}
+          <PreferenceSettingCard
+            title={'도서'}
+            level={bookshelfLevel}
+            genres={bookGenres}
+            thumbnail={bookImg}
+            maxCount={storageData.maxBooks}
+            savedCount={storageData.savedBooks}
+            writtenCount={storageData.writtenReviews}
+            isAdd={furnitures[0].isVisible}
+            onClick={() => onFurnitureToggle('BOOKSHELF')}
+          />
         </div>
       </div>
     </div>

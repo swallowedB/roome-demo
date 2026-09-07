@@ -3,13 +3,11 @@ import addCheck from '@assets/room/addFurniture-icon.svg';
 export default function PreferenceSettingCard({
   title,
   thumbnail,
-  maxCount,
   savedCount,
   writtenCount,
   isAdd,
   onClick,
   level,
-  genres,
 }: PreferenceSettingCardProps) {
   const isMusic = title === '음악';
 
@@ -46,9 +44,6 @@ export default function PreferenceSettingCard({
                 </p>
                 <p className='font-semibold text-[#3E507D]'>Lv.{level}</p>
               </div>
-              <p className='text-[#3E507D]/70 text-[10px] md:text-xs lg:text-sm font-medium'>
-                최대 저장 가능한 갯수 {maxCount}개
-              </p>
             </header>
 
             {/* 현황 */}
@@ -63,25 +58,6 @@ export default function PreferenceSettingCard({
                 <strong>{writtenCount}</strong>개
               </li>
             </ul>
-
-            {/* 취향 키워드 */}
-            <div className='hidden lg:flex flex-wrap items-center gap-2 font-medium mt-1 ml-[-5px]  min-w-[180px]'>
-              {genres.length > 0 ? (
-                genres.map((genre) => {
-                  const isLongText = genre.length >= 3;
-                  return (
-                  <span
-                  key={genre}
-                  className={`px-1.5 py-0.5 bg-[#4E7ACF]/10 rounded-full text-[#4E7ACF] ${
-                    isLongText ? 'line-clamp-2 break-words text-[8px] md:text-[10px]' : 'text-[10px] md:text-xs'}`}>
-                    {genre}
-                  </span>
-                )
-              })
-              ) : (
-                <span className='px-3 py-0.5 bg-[#4E7ACF]/10 rounded-full text-[#4E7ACF]'>딱 맞는 취향을 찾는중 ...</span>
-              )}
-            </div>
           </div>
         </div>
       </article>
