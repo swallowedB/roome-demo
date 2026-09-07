@@ -106,9 +106,9 @@ export const roomAPI = {
   /**
    * 해당 사용자가 잠금 헤자한 방 테마 목록을 반환한다.
    * @param userId 사용자 ID
-   */
+  */
   purchaseThemes: async (roomId: number, themeName: string) => {
-    if (isDemoMode) return demoBackend.getRoom(roomId);
+    if (isDemoMode) return demoBackend.getRoomByRoomId(roomId);
 
     try {
       const response = await axiosInstance.post(

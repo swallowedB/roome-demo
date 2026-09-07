@@ -1,5 +1,7 @@
 import axiosInstance from './axiosInstance';
 import { BookType, ReviewType } from '@/types/book';
+import { demoBackend } from '@/demo/demoBackend';
+import { isDemoMode } from '@/demo/demoMode';
 
 const API_URL = 'api';
 
@@ -78,6 +80,10 @@ export const bookAPI = {
     lastBookId?: number,
     keyword?: string,
   ) => {
+    if (isDemoMode) {
+      return demoBackend.getBookCase(userId, pageSize, lastBookId, keyword);
+    }
+
     let url = `/${API_URL}/mybooks?userId=${userId}&pageSize=${pageSize}`;
 
     if (lastBookId) {
@@ -106,6 +112,18 @@ export const bookAPI = {
    * @returns
    */
   addBookToMyBook: async (book: BookType, userId: number) => {
+    if (isDemoMode) {
+      return demoBackend.addBook(userId, {
+        title: book.title,
+        author: book.author,
+        publisher: book.publisher,
+        publishedDate: book.publishedDate,
+        imageUrl: book.imageUrl,
+        genreNames: book.genreNames,
+        page: book.page,
+      });
+    }
+
     const response = await axiosInstance.post(
       `/${API_URL}/mybooks?userId=${userId}`,
       book,
@@ -120,6 +138,14 @@ export const bookAPI = {
    * const response = await bookAPI.deleteBookFromMyBook('1', '8,7');
    */
   deleteBookFromMyBook: async (userId: string, myBookId: string) => {
+    if (isDemoMode) {
+      const bookIds = myBookId
+        .split(',')
+        .map(Number)
+        .filter(Number.isFinite);
+      return demoBackend.deleteBooks(Number(userId), bookIds);
+    }
+
     const response = await axiosInstance.delete(`/${API_URL}/mybooks`, {
       params: {
         userId,
