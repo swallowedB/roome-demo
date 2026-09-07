@@ -3,8 +3,9 @@ import { useAuthStore } from '../store/useAuthStore';
 import { useUserStore } from '../store/useUserStore';
 import { useEffect, useState } from 'react';
 import { fetchUserInfo, refreshAccessTokenAPI } from '@/apis/auth';
-import Loading from '@/components/Loading';
+import { DelayedLoading } from '@/components/Loading';
 import { DEMO_USER, isDemoMode } from '@/demo/demoMode';
+import { getProtectedRouteLoadingState } from './protectedRouteLoading';
 
 export default function ProtectedRoute() {
   const accessToken = useAuthStore((state) => state.accessToken);
@@ -41,7 +42,10 @@ export default function ProtectedRoute() {
     initialize();
   }, [accessToken, setAccessToken, setUser]);
 
-  if (loading) return <Loading />;
+  const loadingState = getProtectedRouteLoadingState(isDemoMode, loading);
+
+  if (loadingState === 'hidden') return null;
+  if (loadingState === 'delayed') return <DelayedLoading />;
 
   if (isDemoMode) return <Outlet />;
 

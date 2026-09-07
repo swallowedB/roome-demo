@@ -1,35 +1,39 @@
-import BookPage from '@pages/book/BookPage';
-import BookCasePage from '@pages/bookcase/BookCasePage';
-import CdPage from '@pages/cd/CdPage';
-import CdRackPage from '@pages/cdrack/CdRackPage';
-import EventPage from '@pages/event/EventPage';
-import LoginPage from '@pages/login/LoginPage';
 import MainPage from '@pages/main/MainPage';
-import NotFoundPage from '@pages/NotFoundPage';
-import PointPage from '@pages/point/PointPage';
-import ProfileCardEditPage from '@pages/profile-card-edit/ProfileCardEditPage';
-import ProfileCardPage from '@pages/profile-card/ProfileCardPage';
 import BaseLayout from '@routes/layout/BaseLayout';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { type ReactNode } from 'react';
-import RoomPage from '../pages/room/RoomPage';
+import { lazy, Suspense, type ReactNode } from 'react';
 // import PaymentPage from '@pages/payment/PaymentPage';
 // import PaymentSuccessPage from '@pages/payment/PaymentSuccessPage';
 // import PaymentFailPage from '@pages/payment/PaymentFailPage';
 // import RefundPage from '@pages/payment/RefundPage';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import OAuthCallback from '@pages/login/components/OAuthCallback';
-import ExtraInfo from '@pages/login/ExtraInfo';
-import OnboardingPage from '@pages/onboarding/OnboardingPage';
-import TempPage from '@pages/temp/TempPage';
 import { isDemoMode } from '@/demo/demoMode';
+import { DelayedLoading } from '@/components/Loading';
+
+const BookPage = lazy(() => import('@pages/book/BookPage'));
+const BookCasePage = lazy(() => import('@pages/bookcase/BookCasePage'));
+const CdPage = lazy(() => import('@pages/cd/CdPage'));
+const CdRackPage = lazy(() => import('@pages/cdrack/CdRackPage'));
+const EventPage = lazy(() => import('@pages/event/EventPage'));
+const LoginPage = lazy(() => import('@pages/login/LoginPage'));
+const NotFoundPage = lazy(() => import('@pages/NotFoundPage'));
+const PointPage = lazy(() => import('@pages/point/PointPage'));
+const ProfileCardEditPage = lazy(
+  () => import('@pages/profile-card-edit/ProfileCardEditPage'),
+);
+const ProfileCardPage = lazy(() => import('@pages/profile-card/ProfileCardPage'));
+const RoomPage = lazy(() => import('@pages/room/RoomPage'));
+const OAuthCallback = lazy(() => import('@pages/login/components/OAuthCallback'));
+const ExtraInfo = lazy(() => import('@pages/login/ExtraInfo'));
+const TempPage = lazy(() => import('@pages/temp/TempPage'));
 
 const ServiceOnly = ({ children }: { children: ReactNode }) =>
   isDemoMode ? <Navigate to='/' replace /> : children;
 
 const Router = () => {
   return (
-    <Routes>
+    <Suspense fallback={<DelayedLoading />}>
+      <Routes>
       <Route
         path='/temp'
         element={<ServiceOnly><TempPage /></ServiceOnly>}
@@ -44,7 +48,7 @@ const Router = () => {
       />
       <Route
         path='/onboarding'
-        element={<OnboardingPage />}
+        element={<Navigate to='/' replace />}
       />
       <Route
         path='/login/info'
@@ -61,7 +65,7 @@ const Router = () => {
           />
           <Route
             path='/bookcase/:userId'
-            element={<ServiceOnly><BookCasePage /></ServiceOnly>}
+            element={<BookCasePage />}
           />
           <Route
             path='/cdrack/:userId'
@@ -125,7 +129,8 @@ const Router = () => {
         element={<PaymentFailPage />}
         /> */}
       </Route>
-    </Routes>
+      </Routes>
+    </Suspense>
   );
 };
 export default Router;

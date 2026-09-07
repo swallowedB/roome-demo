@@ -108,17 +108,17 @@ const HiddenMenu = ({
                 피드백
               </Link>
             </li>
-            <li>
-              <button
-                onClick={
-                  isDemoMode ? () => window.location.reload() : handleLogout
-                }
-                type='button'
-                className='w-full py-3 flex items-center justify-center gap-1 text-[#2E4D99]/50 hover:text-[#2E4D99] group transition-colors select-none'>
-                <PowerIcon className='w-5 h-5' />
-                {isDemoMode ? '데모 처음부터 보기' : '로그아웃'}
-              </button>
-            </li>
+            {!isDemoMode && (
+              <li>
+                <button
+                  onClick={handleLogout}
+                  type='button'
+                  className='w-full py-3 flex items-center justify-center gap-1 text-[#2E4D99]/50 hover:text-[#2E4D99] group transition-colors select-none'>
+                  <PowerIcon className='w-5 h-5' />
+                  로그아웃
+                </button>
+              </li>
+            )}
           </ul>
         </motion.div>
       )}
