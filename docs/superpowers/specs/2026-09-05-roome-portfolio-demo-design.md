@@ -12,7 +12,7 @@ The public demo is not the original production service.  It must never call the 
 
 ## Experience to preserve
 
-1. The onboarding page is the public entry.  Its CTA starts the demo without social login.
+1. The main hive is the public entry. The former `/onboarding` route redirects to `/` without social login.
 2. The main hive, the seeded user's room, room theme/furniture controls, the CD rack, CD details, CD comments/templates, and the guestbook are usable against demo-session data.
 3. Adding a CD searches the real Spotify catalog, then obtains the matching YouTube URL and duration from the real YouTube Data API.  The selected CD is added to the in-memory rack for that browser session.
 4. A visible, non-intrusive notice explains that this is a portfolio demo and that changes reset on refresh.
