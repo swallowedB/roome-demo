@@ -3,6 +3,7 @@ import { useToastStore } from '@/store/useToastStore';
 import { bookAPI } from '@/apis/book';
 import { deleteCdsFromMyRack } from '@/apis/cd';
 import { DATA_LIST_THEMES } from '@/constants/dataListTheme';
+import { withDemoResetNotice } from '@/demo/demoMessage';
 
 interface UseDataListDeleteProps {
   type: 'book' | 'cd';
@@ -44,7 +45,10 @@ export const useDataListDelete = ({
       onDelete?.(selectedIds);
 
       // 성공 메시지
-      showToast(`선택한 ${theme.itemLabel}이 삭제되었어요!`, 'success');
+      showToast(
+        withDemoResetNotice(`선택한 ${theme.itemLabel}이 삭제되었어요!`),
+        'success',
+      );
       return true;
     } catch (error: unknown) {
       const errorMessage =

@@ -5,18 +5,27 @@ type ToastType = 'success' | 'error' | 'info';
 interface ToastState {
   message: string | null;
   type: ToastType | null;
-  showToast: (message: string, type: ToastType) => void;
+  showToast: (message: string, type: ToastType, duration?: number) => void;
   hideToast: () => void;
 }
+
+let toastTimeout: ReturnType<typeof setTimeout> | undefined;
 
 export const useToastStore = create<ToastState>((set) => ({
   message: null,
   type: null,
-  showToast: (message, type) => {
+  showToast: (message, type, duration = 5000) => {
+    if (toastTimeout) clearTimeout(toastTimeout);
+
     set({ message, type });
-    setTimeout(() => {
+    toastTimeout = setTimeout(() => {
       set({ message: null, type: null });
-    }, 5000);
+      toastTimeout = undefined;
+    }, duration);
   },
-  hideToast: () => set({ message: null, type: null })
+  hideToast: () => {
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = undefined;
+    set({ message: null, type: null });
+  },
 }));

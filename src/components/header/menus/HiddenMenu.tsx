@@ -108,6 +108,13 @@ const HiddenMenu = ({
                 피드백
               </Link>
             </li>
+            {isDemoMode && (
+              <li className='px-4 py-3 text-center text-xs font-medium leading-relaxed text-[#2E4D99]/60'>
+                ⓘ 데모 안내
+                <br />
+                변경사항은 새로고침하면 초기화됩니다.
+              </li>
+            )}
             {!isDemoMode && (
               <li>
                 <button

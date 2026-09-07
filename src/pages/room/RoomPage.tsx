@@ -15,6 +15,7 @@ import RoomModel from './components/RoomModel';
 import ThemeSetting from './components/ThemeSetting';
 import NotFoundPage from '../NotFoundPage';
 import { shouldShowInitialRoomLoading } from './roomRendering';
+import { withDemoResetNotice } from '@/demo/demoMessage';
 
 export default function RoomPage() {
   const { showToast } = useToastStore();
@@ -116,7 +117,10 @@ export default function RoomPage() {
         selectedTheme,
       );
 
-      showToast('테마가 업데이트됐어요! 새로운 느낌, 어떠세요?', 'success');
+      showToast(
+        withDemoResetNotice('테마가 업데이트됐어요! 새로운 느낌, 어떠세요?'),
+        'success',
+      );
     } catch (error) {
       console.error('방 테마 변경 실패:', error);
       showToast('테마 변경에 실패했어요. 다시 시도해볼까요?', 'error');
@@ -162,6 +166,7 @@ export default function RoomPage() {
             : f,
         ),
       }));
+      showToast(withDemoResetNotice('가구 설정이 변경됐어요!'), 'success');
     } catch (error) {
       console.error('가구 설정 변경 실패:', error);
     }

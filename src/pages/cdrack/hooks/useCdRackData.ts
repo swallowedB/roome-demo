@@ -7,6 +7,7 @@ import {
 } from '../../../apis/cd';
 import { useToastStore } from '../../../store/useToastStore';
 import { mapToPostCDInfo } from '../../../utils/cdMapper';
+import { withDemoResetNotice } from '@/demo/demoMessage';
 
 export default function useCdRackData(
   targetUserId: number | null,
@@ -121,7 +122,7 @@ export default function useCdRackData(
           setItems((prev) =>
             prev.map((cd) => (cd.myCdId === tempId ? res.data : cd)),
           );
-          showToast('CD가 추가되었어요!', 'success');
+          showToast(withDemoResetNotice('CD가 추가되었어요!'), 'success');
         }
       } catch (err) {
         console.error('🚨 CD 추가 실패 (rollback):', err);
@@ -143,7 +144,10 @@ export default function useCdRackData(
         await deleteCdsFromMyRack(myCdIds);
 
         setItems((prev) => prev.filter((cd) => !myCdIds.includes(cd.myCdId)));
-        showToast('성공적으로 음악이 삭제 되었어요!', 'success');
+        showToast(
+          withDemoResetNotice('성공적으로 음악이 삭제 되었어요!'),
+          'success',
+        );
       } catch (err) {
         console.error('🚨 CD 삭제 실패 (rollback):', err);
         setItems(prevItems);

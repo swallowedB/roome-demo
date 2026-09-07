@@ -6,6 +6,7 @@ import { mapToPostCDInfo, mapToRawCd } from '@/utils/cdMapper';
 import { useUserStore } from '@/store/useUserStore';
 import { useToastStore } from '@/store/useToastStore';
 import { BookType } from '@/types/book';
+import { withDemoResetNotice } from '@/demo/demoMessage';
 
 interface UseSearchActionsProps {
   type: 'CD' | 'BOOK';
@@ -45,7 +46,7 @@ export const useSearchActions = ({
           Number(userId),
         );
         onClose();
-        showToast('책장에 책이 추가되었어요!', 'success');
+        showToast(withDemoResetNotice('책장에 책이 추가되었어요!'), 'success');
         onSuccess?.({
           ...item,
           id: response.id.toString(),
@@ -89,7 +90,7 @@ export const useSearchActions = ({
           duration: payload.duration,
           id: myCdId != null ? String(myCdId) : item.id,
         });
-        showToast('랙에 cd가 추가되었어요!', 'success');
+        showToast(withDemoResetNotice('랙에 cd가 추가되었어요!'), 'success');
         onClose();
       }
     } catch (error) {
