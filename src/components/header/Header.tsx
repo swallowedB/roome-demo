@@ -167,7 +167,7 @@ const Header = () => {
 
   return (
     <>
-      <header className='fixed top-0 z-50 items-start pt-10 max-sm:px-6 max-sm:pt-8 w-full pointer-events-none px-21 item-between'>
+      <header className='fixed top-0 z-50 items-start pt-10 max-sm:px-6 max-sm:pt-8 w-full pointer-events-none px-10 item-between'>
         {/* 로고 */}
         <button
           aria-label='로고'
