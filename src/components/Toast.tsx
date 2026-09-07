@@ -2,7 +2,7 @@ import { useToastStore } from '@/store/useToastStore';
 import { TOAST_STYLES } from '@/constants/toast';
 
 export const Toast = () => {
-  const { message, type } = useToastStore();
+  const { message, type, description } = useToastStore();
 
   if (!message || !type) return null;
 
@@ -25,10 +25,18 @@ export const Toast = () => {
         alt={`${type} 알림 아이콘`}
         className={`w-5 h-5 flex-shrink-0 ${style?.iconColor}`}
       />
-      <span
-        className={`${style?.textColor} font-semibold break-keep text-center text-sm sm:text-base`}>
-        {message}
-      </span>
+      <div className='flex min-w-0 flex-col items-center gap-1'>
+        <span
+          className={`${style?.textColor} break-keep text-center text-sm font-semibold sm:text-base`}>
+          {message}
+        </span>
+        {description && (
+          <span
+            className={`${style?.textColor} break-keep text-center text-xs font-medium opacity-70`}>
+            {description}
+          </span>
+        )}
+      </div>
     </div>
   );
 };
