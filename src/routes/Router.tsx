@@ -8,7 +8,7 @@ import { lazy, Suspense, type ReactNode } from 'react';
 // import RefundPage from '@pages/payment/RefundPage';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { isDemoMode } from '@/demo/demoMode';
-import { DelayedLoading } from '@/components/Loading';
+import Loading from '@/components/Loading';
 
 const BookPage = lazy(() => import('@pages/book/BookPage'));
 const BookCasePage = lazy(() => import('@pages/bookcase/BookCasePage'));
@@ -32,7 +32,7 @@ const ServiceOnly = ({ children }: { children: ReactNode }) =>
 
 const Router = () => {
   return (
-    <Suspense fallback={<DelayedLoading />}>
+    <Suspense fallback={<Loading />}>
       <Routes>
       <Route
         path='/temp'

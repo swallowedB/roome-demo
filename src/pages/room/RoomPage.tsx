@@ -4,7 +4,7 @@ import { startTransition, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { rankAPI } from '../../apis/ranking';
 import { roomAPI } from '../../apis/room';
-import { DelayedLoading } from '../../components/Loading';
+import Loading from '../../components/Loading';
 import { ANIMATION_VARIANTS } from '../../constants/animation';
 import { SIGN_VARIANTS } from '../../constants/sign';
 import { useToastStore } from '../../store/useToastStore';
@@ -14,7 +14,7 @@ import PreferenceSetting from './components/PreferenceSetting';
 import RoomModel from './components/RoomModel';
 import ThemeSetting from './components/ThemeSetting';
 import NotFoundPage from '../NotFoundPage';
-import { shouldShowInitialRoomLoading } from './roomRendering';
+import { getInitialRoomLoadingState } from './roomRendering';
 import { demoResetToastOptions } from '@/demo/demoMessage';
 
 export default function RoomPage() {
@@ -195,13 +195,8 @@ export default function RoomPage() {
 
   return (
     <main className='overflow-hidden relative w-full min-h-screen main-background'>
-      <DelayedLoading
-        isLoading={shouldShowInitialRoomLoading(
-          isModelLoading,
-          hasRenderedScene,
-        )}
-        overlay
-      />
+      {getInitialRoomLoadingState(isModelLoading, hasRenderedScene) ===
+        'blocking' && <Loading overlay />}
       {roomData && (
         <>
           <RoomModel
