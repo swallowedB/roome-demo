@@ -12,3 +12,8 @@ export const hasInitialHiveSceneLoaded = (
     requiredRoomIds.every((roomId) => loadedRooms.has(roomId))
   );
 };
+
+export const getHiveLoadingState = (
+  isRoomDataLoading: boolean,
+  isSceneLoading: boolean,
+) => (isRoomDataLoading || isSceneLoading ? 'loading' : 'ready');

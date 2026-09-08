@@ -1,4 +1,5 @@
 import HiveRoomsScene from '@pages/main/components/HiveRoomsScene';
+import { getHiveLoadingState } from '@pages/main/engine/HiveLoading';
 import useHiveInteractions from '@pages/main/hooks/useHiveInteractions';
 import useHiveLoading from '@pages/main/hooks/useHiveLoading';
 import { OrbitControls } from '@react-three/drei';
@@ -7,7 +8,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as THREE from 'three';
-import { DelayedLoading } from '../../../components/Loading';
+import Loading from '../../../components/Loading';
 import { RoomLighting } from '../../../components/room-models/RoomLighting';
 import useHexagonGrid from '../hooks/useHexagonGrid';
 import useRooms from '../hooks/useRooms';
@@ -16,7 +17,7 @@ export default function HiveRooms({
   myUserId,
   onLoadingComplete,
 }: HiveRoomsProps) {
-  const { rooms } = useRooms(myUserId);
+  const { rooms, loading: isRoomDataLoading } = useRooms(myUserId);
   const positionedRooms = useHexagonGrid(rooms, 0, 0);
   const navigate = useNavigate();
   const [initialLoadRoomIds, setInitialLoadRoomIds] = useState<string[]>([]);
@@ -55,6 +56,7 @@ export default function HiveRooms({
     hasInitialVisibleBatch,
     onLoadingComplete,
   );
+  const loadingState = getHiveLoadingState(isRoomDataLoading, isLoading);
 
   useEffect(() => {
     if (!isLoading && pinnedInitialRoomIds.length) {
@@ -64,7 +66,7 @@ export default function HiveRooms({
 
   return (
     <div className='w-full h-screen relative'>
-      {isLoading && <DelayedLoading overlay />}
+      {loadingState === 'loading' && <Loading overlay />}
       <Canvas
         camera={{ position: [0, 4, 10], fov: 25 }}
         shadows>
