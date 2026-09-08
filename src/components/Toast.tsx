@@ -13,7 +13,7 @@ export const Toast = () => {
       className={`
       fixed top-8 left-1/2 -translate-x-1/2 z-[500]
       py-4 px-8 rounded-lg
-      flex items-center gap-4 justify-center
+      flex items-center gap-4 justify-start
       border-2 ${style?.bg} ${style?.border}
       animate-fade-in-down
       shadow-md
@@ -23,16 +23,16 @@ export const Toast = () => {
       <img
         src={style?.icon}
         alt={`${type} 알림 아이콘`}
-        className={`w-5 h-5 flex-shrink-0 ${style?.iconColor}`}
+        className={`h-7 w-7 flex-shrink-0 ${style?.iconColor}`}
       />
-      <div className='flex min-w-0 flex-col items-center gap-1'>
+      <div className='flex min-w-0 flex-col items-start gap-1'>
         <span
-          className={`${style?.textColor} break-keep text-center text-sm font-semibold sm:text-base`}>
+          className={`${style?.textColor} break-keep text-left text-sm font-semibold sm:text-base`}>
           {message}
         </span>
         {description && (
           <span
-            className={`${style?.textColor} break-keep text-center text-xs font-medium opacity-70`}>
+            className={`${style?.textColor} break-keep text-left text-xs font-medium opacity-70`}>
             {description}
           </span>
         )}
