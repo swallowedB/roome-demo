@@ -6,6 +6,7 @@ import RankingModal from './components/RankingModal';
 import MyRoomBtn from './components/MyRoomBtn';
 import RankMenu from './components/RankMenu';
 import Loading from '../../components/Loading';
+import { DEMO_WELCOME_STORAGE_KEY } from '@/demo/demoWelcome';
 
 const HiveRooms = lazy(() => import('./components/HiveRooms'));
 
@@ -45,6 +46,18 @@ export default function MainPage() {
       {/* 하단 버튼 */}
       <RankMenu onOpen={() => setIsRankingOpen(true)} />
       {user && <MyRoomBtn user={user} />}
+      {import.meta.env.DEV && (
+        <button
+          type='button'
+          onClick={() => {
+            localStorage.removeItem(DEMO_WELCOME_STORAGE_KEY);
+            window.location.reload();
+          }}
+          className='fixed bottom-6 left-1/2 z-40 -translate-x-1/2 rounded-full border border-white/70 bg-[#162C63]/75 px-4 py-2 text-xs font-semibold text-white shadow-lg backdrop-blur-sm transition-opacity hover:bg-[#162C63]'
+          aria-label='데모 안내 미리 보기'>
+          데모 안내 미리 보기
+        </button>
+      )}
 
       {/* 랭킹 모달 */}
       <AnimatePresence>
