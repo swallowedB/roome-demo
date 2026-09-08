@@ -31,6 +31,11 @@ export default function DemoNotice() {
         aria-labelledby='demo-welcome-title'
         className='w-[min(440px,calc(100vw-40px))] rounded-3xl border-2 border-[#FCF7FD] bg-[#FCF7FD]/20 p-2.5 backdrop-blur-2xl modal-shadow'>
         <div className='rounded-2xl bg-[#FCF7FD] px-8 py-10 text-center'>
+          <img
+            src='/RoomE.svg'
+            alt=''
+            className='mx-auto mb-4 h-14 w-14'
+          />
           <h2
             id='demo-welcome-title'
             className='mb-5 text-2xl font-bold text-[#162C63]'>
