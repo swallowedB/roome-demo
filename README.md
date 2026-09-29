@@ -18,18 +18,16 @@
 
 ## 포트폴리오 데모 배포
 
-이 저장소는 원본 RoomE 서비스와 분리된 공개 데모입니다. 소셜 로그인·원본 백엔드·결제·알림은 사용하지 않으며, 방문자가 추가한 도서·CD·서평·댓글·방명록·테마는 브라우저를 새로고침하면 초기화됩니다. 도서 검색은 알라딘, 음악 검색과 재생 정보는 Spotify·YouTube 데이터를 사용합니다.
+이 저장소는 원본 RoomE 서비스와 분리된 공개 데모입니다. 소셜 로그인·원본 백엔드·결제·알림은 사용하지 않으며, 방문자가 추가한 도서·CD·서평·댓글·방명록·테마는 브라우저를 새로고침하면 초기화됩니다. 첫 화면은 선별한 데모 seed를 즉시 보여 주고, 도서 검색은 알라딘, 음악 검색은 Deezer, 재생 정보는 YouTube 데이터를 사용합니다.
 
 ### Cloudflare Pages 설정
 
 1. Cloudflare Pages에서 GitHub의 `swallowedB/roome-demo` 저장소와 `main` 브랜치를 연결합니다.
 2. 빌드 명령은 `pnpm build`, 출력 폴더는 `dist`로 설정합니다.
-3. **Settings → Variables and Secrets**에서 아래 네 값을 **암호화된 Secret**으로 추가합니다. 값은 GitHub·소스 코드·`VITE_` 변수에 넣지 않습니다. 데모 모드는 `.env.production`에서 자동 적용됩니다.
+3. **Settings → Variables and Secrets**에서 아래 두 값을 **암호화된 Secret**으로 추가합니다. 값은 GitHub·소스 코드·`VITE_` 변수에 넣지 않습니다. 데모 모드는 `.env.production`에서 자동 적용됩니다.
 
 | Secret 이름 | 용도 |
 | --- | --- |
-| `SPOTIFY_CLIENT_ID` | Spotify 서버 인증 ID |
-| `SPOTIFY_CLIENT_SECRET` | Spotify 서버 인증 비밀 값 |
 | `YOUTUBE_API_KEY` | YouTube 검색 및 재생 길이 조회 |
 | `ALADIN_TTB_KEY` | 알라딘 도서 검색 API 키 |
 

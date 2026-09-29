@@ -3,63 +3,53 @@ import test from 'node:test';
 import * as search from './search';
 import * as video from './video';
 
-const spotifyEnv = {
-  SPOTIFY_CLIENT_ID: 'client-id',
-  SPOTIFY_CLIENT_SECRET: 'client-secret',
-};
-
-test('rejects a Spotify search without q', async () => {
+test('rejects a music search without q', async () => {
   const response = await search.onRequestGet({
     request: new Request('https://demo.example/api/music/search'),
-    env: spotifyEnv,
+    env: {},
   });
 
   assert.equal(response.status, 400);
   assert.deepEqual(await response.json(), { error: 'query is required' });
 });
 
-test('maps a Spotify track to the CD search result used by the app', async () => {
+test('maps a Deezer track to the CD search result used by the app', async () => {
   const originalFetch = globalThis.fetch;
-  const responses = [
-    { access_token: 'token', expires_in: 3600 },
-    {
-      tracks: {
-        items: [
+  globalThis.fetch = async () =>
+    new Response(
+      JSON.stringify({
+        data: [
           {
-            id: 'track-1',
-            name: 'Demo Song',
-            artists: [{ id: 'artist-1', name: 'Demo Artist' }],
+            id: 123,
+            title: 'Demo Song',
+            artist: { name: 'Demo Artist' },
             album: {
-              name: 'Demo Album',
-              release_date: '2024-01-02',
-              images: [{ url: 'https://image.example/cover.jpg' }],
+              title: 'Demo Album',
+              cover_big: 'https://image.example/cover.jpg',
             },
           },
         ],
-      },
-    },
-    { genres: ['indie', 'pop', 'rock', 'extra'] },
-  ];
-  globalThis.fetch = async () =>
-    new Response(JSON.stringify(responses.shift()), { status: 200 });
+      }),
+      { status: 200 },
+    );
 
   try {
     const response = await search.onRequestGet({
       request: new Request('https://demo.example/api/music/search?q=demo'),
-      env: spotifyEnv,
+      env: {},
     });
 
     assert.equal(response.status, 200);
     assert.deepEqual(await response.json(), [
       {
-        id: 'track-1',
+        id: '123',
         title: 'Demo Song',
         artist: 'Demo Artist',
         album_title: 'Demo Album',
-        date: '2024-01-02',
+        date: '',
         imageUrl: 'https://image.example/cover.jpg',
         type: 'CD',
-        genres: ['indie', 'pop', 'rock'],
+        genres: [],
       },
     ]);
   } finally {
@@ -74,7 +64,7 @@ test('returns a generic error when a music provider is unavailable', async () =>
   try {
     const response = await search.onRequestGet({
       request: new Request('https://demo.example/api/music/search?q=demo'),
-      env: spotifyEnv,
+      env: {},
     });
 
     assert.equal(response.status, 502);

@@ -5,7 +5,7 @@ import { requestMusic } from './musicProxy';
 
 const API_URL = 'api';
 
-// ------------------------------  SPOTIFY & YOUTUBE 검색  API ------------------------------
+// ------------------------------  음악 검색 및 YOUTUBE 재생 API ------------------------------
 export const getYoutubeUrl = async (trackTitle: string, artistName: string) => {
   return requestMusic<{ youtubeUrl: string; duration: number }>(
     `/api/music/video?title=${encodeURIComponent(trackTitle)}&artist=${encodeURIComponent(
@@ -19,7 +19,7 @@ export const getYoutubeUrl = async (trackTitle: string, artistName: string) => {
  * @param searchQuery 입력된 값
  * @returns
  */
-export const searchSpotifyCds = async (
+export const searchCds = async (
   searchQuery: string,
 ): Promise<SearchItemType[]> => {
   if (!searchQuery.trim()) return [];

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { bookAPI } from '@apis/book';
 import { useDebounce } from './useDebounce';
-import { searchSpotifyCds } from '@apis/cd';
+import { searchCds } from '@apis/cd';
 
 // 에러 타입 정의
 export type ApiError = {
@@ -70,7 +70,7 @@ export const useSearch = (type: 'CD' | 'BOOK') => {
       setIsLoading(true);
       setError(null);
 
-      const data = await searchSpotifyCds(searchQuery);
+      const data = await searchCds(searchQuery);
 
       return data.map((cd: CDSearchResult) => ({
         id: cd.id,
