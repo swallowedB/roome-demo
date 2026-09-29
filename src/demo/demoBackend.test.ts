@@ -89,21 +89,25 @@ test('returns only the top ten rankings with 보아 in first place', () => {
   );
 });
 
-test('returns seeded books for the demo bookshelf', () => {
+test('starts the demo bookshelf with ten curated books', () => {
   const bookshelf = demoBackend.getBookCase(101, 45);
 
-  assert.ok(bookshelf.count > 0);
-  assert.equal(bookshelf.myBooks.length, bookshelf.count);
+  assert.equal(bookshelf.count, 10);
+  assert.equal(bookshelf.myBooks.length, 10);
+  assert.equal(new Set(bookshelf.myBooks.map(({ id }) => id)).size, 10);
   assert.equal(
     bookshelf.myBooks.every(({ imageUrl }) => imageUrl.startsWith('https://')),
     true,
   );
+  assert.equal(demoBackend.getRoom(101).userStorage.savedBooks, 10);
 });
 
-test('starts the demo CD rack with curated real music metadata', () => {
+test('starts the demo CD rack with ten curated tracks', () => {
   const rack = demoBackend.getCdRack(101, 20, 0);
 
-  assert.ok(rack.totalCount >= 3);
+  assert.equal(rack.totalCount, 10);
+  assert.equal(rack.data.length, 10);
+  assert.equal(new Set(rack.data.map(({ myCdId }) => myCdId)).size, 10);
   assert.equal(
     rack.data.every(
       ({ artist, coverUrl, youtubeUrl }) =>
@@ -113,6 +117,7 @@ test('starts the demo CD rack with curated real music metadata', () => {
     ),
     true,
   );
+  assert.equal(demoBackend.getRoom(101).userStorage.savedMusic, 10);
 });
 
 test('keeps book details and reviews only in the demo runtime', () => {
