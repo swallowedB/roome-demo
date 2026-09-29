@@ -50,6 +50,17 @@ export type DemoBook = {
   page: number;
 };
 
+type DemoBookReview = {
+  title: string;
+  quote: string;
+  takeaway: string;
+  motivate: string;
+  topic: string;
+  freeFormText: string;
+  coverColor: string;
+  writeDateTime: string;
+};
+
 type DemoGuestbook = {
   guestbookId: number;
   userId: number;
@@ -136,7 +147,7 @@ const additionalRooms: DemoRoom[] = additionalRoomSeedsInHiveOrder.map((seed, in
   userId: 104 + index,
   createdAt: '2026-09-05T00:00:00.000Z',
   furnitures: [
-    { furnitureType: 'BOOKSHELF', isVisible: false, level: 1, maxCapacity: 14 },
+    { furnitureType: 'BOOKSHELF', isVisible: true, level: 1, maxCapacity: 14 },
     { furnitureType: 'CD_RACK', isVisible: true, level: 1, maxCapacity: 14 },
   ],
   storageLimits: { maxBooks: 14, maxMusic: 14 },
@@ -159,7 +170,7 @@ const rooms: DemoRoom[] = [
     theme: 'BASIC',
     createdAt: '2026-09-05T00:00:00.000Z',
     furnitures: [
-      { furnitureType: 'BOOKSHELF', isVisible: false, level: 1, maxCapacity: 14 },
+      { furnitureType: 'BOOKSHELF', isVisible: true, level: 1, maxCapacity: 14 },
       { furnitureType: 'CD_RACK', isVisible: true, level: 1, maxCapacity: 14 },
     ],
     storageLimits: { maxBooks: 14, maxMusic: 14 },
@@ -174,7 +185,7 @@ const rooms: DemoRoom[] = [
     theme: 'FOREST',
     createdAt: '2026-09-05T00:00:00.000Z',
     furnitures: [
-      { furnitureType: 'BOOKSHELF', isVisible: false, level: 1, maxCapacity: 14 },
+      { furnitureType: 'BOOKSHELF', isVisible: true, level: 1, maxCapacity: 14 },
       { furnitureType: 'CD_RACK', isVisible: true, level: 1, maxCapacity: 14 },
     ],
     storageLimits: { maxBooks: 14, maxMusic: 14 },
@@ -189,7 +200,7 @@ const rooms: DemoRoom[] = [
     theme: 'MARINE',
     createdAt: '2026-09-05T00:00:00.000Z',
     furnitures: [
-      { furnitureType: 'BOOKSHELF', isVisible: false, level: 1, maxCapacity: 14 },
+      { furnitureType: 'BOOKSHELF', isVisible: true, level: 1, maxCapacity: 14 },
       { furnitureType: 'CD_RACK', isVisible: true, level: 1, maxCapacity: 14 },
     ],
     storageLimits: { maxBooks: 14, maxMusic: 14 },
@@ -239,6 +250,8 @@ let bookcases: Record<number, DemoBook[]> = {
     },
   ],
 };
+
+const bookReviews: Record<number, DemoBookReview> = {};
 
 let cdRack: DemoCd[] = [
   {
@@ -343,6 +356,41 @@ const getPage = <T extends { myCdId: number }>(
 export const demoBackend = {
   getRoom,
   getRoomByRoomId,
+
+  getBookDetail(myBookId: number): DemoBook {
+    const book = Object.values(bookcases)
+      .flat()
+      .find(({ id }) => id === myBookId);
+    if (!book) throw new Error('demo book not found');
+    return clone(book);
+  },
+
+  getBookReview(myBookId: number) {
+    return bookReviews[myBookId] ? clone(bookReviews[myBookId]) : null;
+  },
+
+  saveBookReview(
+    myBookId: number,
+    review: Partial<Omit<DemoBookReview, 'writeDateTime'>>,
+  ) {
+    this.getBookDetail(myBookId);
+    bookReviews[myBookId] = {
+      title: review.title ?? '',
+      quote: review.quote ?? '',
+      takeaway: review.takeaway ?? '',
+      motivate: review.motivate ?? '',
+      topic: review.topic ?? '',
+      freeFormText: review.freeFormText ?? '',
+      coverColor: review.coverColor ?? 'BLUE',
+      writeDateTime: new Date().toISOString(),
+    };
+    return clone(bookReviews[myBookId]);
+  },
+
+  deleteBookReview(myBookId: number) {
+    delete bookReviews[myBookId];
+    return { deleted: true };
+  },
 
   getFollowing() {
     return {

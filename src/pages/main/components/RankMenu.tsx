@@ -1,6 +1,6 @@
 import RankMenuIcon from '@assets/RankMenu-icon.svg';
 
-export default function RankMenu({onOpen}) {
+export default function RankMenu({ onOpen }: { onOpen: () => void }) {
   return (
     <button
       onClick={onOpen}

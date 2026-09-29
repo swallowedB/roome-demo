@@ -32,14 +32,7 @@ export const useBookReview = ({
   const showToast = useToastStore((state) => state.showToast);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasExistingReview, setHasExistingReview] = useState(false);
-  const [reviewFields, setReviewFields] = useState<BookReviewData>(() => {
-    // sessionStorage에서 임시저장 데이터 불러오기
-    const savedData = sessionStorage.getItem(`draft-review-${bookId}`);
-    if (savedData) {
-      return JSON.parse(savedData);
-    }
-
-    return {
+  const [reviewFields, setReviewFields] = useState<BookReviewData>(() => ({
       // 도서 정보
       bookTitle: bookInfo.bookTitle,
       author: bookInfo.author,
@@ -55,8 +48,7 @@ export const useBookReview = ({
       reason: '',
       discussion: '',
       freeform: '',
-    };
-  });
+    }));
 
   // 필드 변경 핸들러
   const handleFieldChange = useCallback(
@@ -165,7 +157,6 @@ export const useBookReview = ({
             .updateReview(bookId, reviewData)
             .then(() => {
               showToast('서평 수정 완료!', 'success');
-              sessionStorage.removeItem(`draft-review-${bookId}`);
               onComplete?.();
               navigate(`/book/${bookId}`, { replace: true });
             })
@@ -181,7 +172,6 @@ export const useBookReview = ({
             .addReview(bookId, reviewData)
             .then(() => {
               showToast('서평 등록 완료!', 'success');
-              sessionStorage.removeItem(`draft-review-${bookId}`);
               onComplete?.();
               navigate(`/book/${bookId}`, { replace: true });
             })

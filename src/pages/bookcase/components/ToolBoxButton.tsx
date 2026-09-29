@@ -52,7 +52,9 @@ const ToolBoxButton = ({
           {
             id: 'list',
             label: '목록 보러가기',
-            onClick: onOpenList,
+            onClick: () => {
+              onOpenList();
+            },
             icon: (
               <BookListIcon
                 fill='white'
@@ -65,7 +67,9 @@ const ToolBoxButton = ({
                 {
                   id: 'add',
                   label: '도서 추가하기',
-                  onClick: onAddBook,
+                  onClick: () => {
+                    onAddBook();
+                  },
                   icon: (
                     <AddBookIcon
                       fill='white'
@@ -93,7 +97,9 @@ const ToolBoxButton = ({
           <button
             className={`flex justify-center items-center p-4 w-16 h-16 bottom-menu-icon group ${getMainButtonBackground()}`}
             aria-label='도구 메뉴 열기'
-            onClick={() => setIsOpen(!isOpen)}>
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}>
             <img
               className='w-7 h-7'
               src={ToolBoxIcon}
@@ -139,7 +145,9 @@ const ToolBoxButton = ({
                   ? 'bg-white'
                   : 'bg-transparent hover:bg-white/50'
               }`}
-              onClick={onAddBook}>
+              onClick={() => {
+                onAddBook();
+              }}>
               <AddBookIcon
                 fill='white'
                 className='group-hover:fill-[#73A1F7] transition-colors'

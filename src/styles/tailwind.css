@@ -181,6 +181,7 @@
       transform: translateY(-30px) scale(1.1) rotate(5deg);
     }
   }
+
 }
 
 @keyframes marquee {

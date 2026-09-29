@@ -12,7 +12,6 @@ import { BOOK_THEME, BookThemeType } from '@/constants/bookTheme';
 import { useToastStore } from '@/store/useToastStore';
 import { useUserStore } from '@/store/useUserStore';
 import { useBookReview } from '@hooks/book/useBookReview';
-import { useBookReviewAutoSave } from '@hooks/book/useBookReviewAutoSave';
 import {
   useFeatureUsageTracking,
   FEATURE_NAMES,
@@ -33,6 +32,7 @@ const BookEditorPage = ({
   genreNames,
   publishedDate,
   imageUrl,
+  onComplete,
 }: BookEditorPageProps) => {
   const { bookId } = useParams();
   const showToast = useToastStore((state) => state.showToast);
@@ -44,7 +44,8 @@ const BookEditorPage = ({
   // trackFeatureCompletion 함수 메모이제이션
   const memoizedEndTracking = useCallback(() => {
     trackFeatureCompletion(FEATURE_NAMES.BOOK, user?.userId?.toString());
-  }, [trackFeatureCompletion, user?.userId]);
+    onComplete?.();
+  }, [onComplete, trackFeatureCompletion, user?.userId]);
 
   // bookInfo 객체 메모이제이션
   const bookInfo = useMemo(
@@ -77,22 +78,9 @@ const BookEditorPage = ({
     onComplete: memoizedEndTracking,
   });
 
-  // 자동 저장 커스텀 훅
-  const { handleTempSave } = useBookReviewAutoSave({
-    bookId,
-    reviewData: reviewFields,
-  });
-
   useEffect(() => {
     startFeatureTracking(FEATURE_NAMES.BOOK, user?.userId?.toString());
   }, [startFeatureTracking, user?.userId]);
-
-  // 수동 임시저장 핸들러
-  const handleTempSaveClick = useCallback(() => {
-    if (handleTempSave()) {
-      showToast('임시저장 완료!', 'success');
-    }
-  }, [handleTempSave, showToast]);
 
   // 저장 핸들러
   const handleSaveClick = useCallback(() => {
@@ -189,7 +177,6 @@ const BookEditorPage = ({
               isSubmitting={isSubmitting}
               isValidReview={isValidReviewResult}
               theme={reviewFields.theme}
-              onTempSave={handleTempSaveClick}
               onSave={handleSaveClick}
             />
           </div>

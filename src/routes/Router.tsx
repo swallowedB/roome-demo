@@ -108,12 +108,12 @@ const Router = () => {
         {/* 내 서평 보기/작성/수정 */}
         <Route
           path='/book/:bookId'
-          element={<ServiceOnly><BookPage /></ServiceOnly>}
+          element={<BookPage />}
         />
         {/* 다른 유저의 서평 보기 */}
         <Route
           path='/book/:bookId/user/:userId'
-          element={<ServiceOnly><BookPage /></ServiceOnly>}
+          element={<BookPage />}
         />
         <Route
           path='*'

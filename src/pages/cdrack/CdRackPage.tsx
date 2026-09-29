@@ -46,7 +46,6 @@ export default function CdRackPage() {
   };
 
   const isEmpty = !items || items.length === 0;
-
   return (
     <div className='w-full h-screen'>
       <div className=' w-full h-screen bg-[#2e3e68cc] backdrop-blur-[35px] '>

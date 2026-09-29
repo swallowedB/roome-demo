@@ -18,25 +18,27 @@
 
 ## 포트폴리오 데모 배포
 
-이 저장소는 원본 RoomE 서비스와 분리된 공개 데모입니다. 소셜 로그인·원본 백엔드·결제·알림은 사용하지 않으며, 방문자가 추가한 CD·댓글·방명록·테마는 브라우저를 새로고침하면 초기화됩니다. 음악 검색과 재생 정보만 실제 Spotify·YouTube 데이터를 사용합니다.
+이 저장소는 원본 RoomE 서비스와 분리된 공개 데모입니다. 소셜 로그인·원본 백엔드·결제·알림은 사용하지 않으며, 방문자가 추가한 도서·CD·서평·댓글·방명록·테마는 브라우저를 새로고침하면 초기화됩니다. 도서 검색은 알라딘, 음악 검색과 재생 정보는 Spotify·YouTube 데이터를 사용합니다.
 
 ### Cloudflare Pages 설정
 
 1. Cloudflare Pages에서 GitHub의 `swallowedB/roome-demo` 저장소와 `main` 브랜치를 연결합니다.
 2. 빌드 명령은 `pnpm build`, 출력 폴더는 `dist`로 설정합니다.
-3. **Settings → Variables and Secrets**에 빌드 변수 `VITE_APP_MODE=demo`를 추가합니다.
-4. 같은 화면에서 아래 세 값을 **암호화된 Secret**으로 추가합니다. 값은 GitHub·소스 코드·`VITE_` 변수에 넣지 않습니다.
+3. **Settings → Variables and Secrets**에서 아래 네 값을 **암호화된 Secret**으로 추가합니다. 값은 GitHub·소스 코드·`VITE_` 변수에 넣지 않습니다. 데모 모드는 `.env.production`에서 자동 적용됩니다.
 
 | Secret 이름 | 용도 |
 | --- | --- |
 | `SPOTIFY_CLIENT_ID` | Spotify 서버 인증 ID |
 | `SPOTIFY_CLIENT_SECRET` | Spotify 서버 인증 비밀 값 |
 | `YOUTUBE_API_KEY` | YouTube 검색 및 재생 길이 조회 |
+| `ALADIN_TTB_KEY` | 알라딘 도서 검색 API 키 |
 
-5. Pages 프로젝트의 **Custom domains**에서 `roome.<내-블로그-도메인>`처럼 쓸 서브도메인을 먼저 추가한 뒤, 도메인 관리 화면에서 안내하는 CNAME 레코드를 만듭니다.
-6. 블로그의 `/demos` 페이지에는 위 서브도메인으로 연결되는 RoomE 카드만 추가합니다. RoomE를 블로그 저장소나 모노레포로 옮길 필요는 없습니다.
+알라딘 OpenAPI 키를 발급할 때는 실제 배포할 RoomE 서브도메인을 사용 URL로 등록합니다.
 
-`functions/api/music`의 Pages Functions가 브라우저와 같은 도메인에서 Spotify·YouTube를 호출하므로, 방문자에게 API 비밀 값이 전달되지 않습니다. Pages 무료 플랜 범위에서 정적 데모를 운영할 수 있지만, Spotify와 YouTube의 각 API 할당량은 별도로 적용됩니다.
+4. Pages 프로젝트의 **Custom domains**에서 `roome.<내-블로그-도메인>`처럼 쓸 서브도메인을 먼저 추가한 뒤, 도메인 관리 화면에서 안내하는 CNAME 레코드를 만듭니다.
+5. 블로그의 `/demos` 페이지에는 위 서브도메인으로 연결되는 RoomE 카드만 추가합니다. RoomE를 블로그 저장소나 모노레포로 옮길 필요는 없습니다.
+
+`functions/api/music`과 `functions/api/aladin`의 Pages Functions가 브라우저와 같은 도메인에서 외부 API를 호출하므로, 방문자에게 API 비밀 값이 전달되지 않습니다. Pages 무료 플랜 범위에서 정적 데모를 운영할 수 있지만, 각 외부 API의 할당량은 별도로 적용됩니다.
 
 ### 로컬 확인
 
@@ -46,7 +48,7 @@
 VITE_APP_MODE=demo pnpm dev
 ```
 
-실제 음악 검색은 Cloudflare Pages Functions를 거쳐야 하므로, 배포 후 Pages에서 Secret을 설정한 환경에서 확인합니다. `.dev.vars.example`은 필요한 Secret 이름만 보여 주는 파일이며, 실제 값은 `.dev.vars`에만 보관하고 Git에 올리지 않습니다.
+실제 도서·음악 검색은 Cloudflare Pages Functions를 거쳐야 하므로, 배포 후 Pages에서 Secret을 설정한 환경에서 확인합니다. `.dev.vars.example`은 필요한 Secret 이름만 보여 주는 파일이며, 실제 값은 `.dev.vars`에만 보관하고 Git에 올리지 않습니다.
 
 ## 📍 기여 포인트
 ### 1. 3D 및 인터랙션 구현
@@ -186,4 +188,3 @@ VITE_APP_MODE=demo pnpm dev
     </td>
   </tr>
 </table>
-

@@ -39,7 +39,9 @@ export default function CdDockMenu({
             id: 'add',
             label: '새 음악 추가하기',
             isActive: activeSettings === 'add',
-            onClick: () => onSettingsChange('add'),
+            onClick: () => {
+              onSettingsChange('add');
+            },
             icon: (
               <CdAddIcon
                 className={`h-8 w-8 text-white transition-opacity ${
@@ -54,7 +56,9 @@ export default function CdDockMenu({
             id: 'delete',
             label: '음악 삭제하기',
             isActive: activeSettings === 'delete',
-            onClick: () => onSettingsChange('delete'),
+            onClick: () => {
+              onSettingsChange('delete');
+            },
             icon: (
               <CdListIcon
                 className={`h-8 w-8 text-white transition-opacity ${
@@ -74,14 +78,16 @@ export default function CdDockMenu({
     <div
       ref={menuRef}
       aria-label='플레이리스트 편집 메뉴 열기'
-      className={`z-[5] bottom-menu bottom-20 right-21 max-sm:bottom-12 max-sm:right-8 relative ${
+      className={`bottom-menu bottom-20 right-21 max-sm:bottom-12 max-sm:right-8 relative z-[5] ${
         isOpen ? 'h-[202px]' : 'h-16'
       }`}>
       <div className='relative flex flex-col-reverse items-center w-full h-full gap-5'>
         {/* 메인 버튼 */}
         <button
           className='bottom-menu-icon bg-white group absolute'
-          onClick={() => setIsOpen((prev) => !prev)}>
+          onClick={() => {
+            setIsOpen((prev) => !prev);
+          }}>
           <DockMenuIcon
             className={`w-6 h-6 transition-colors ${
               activeSettings === null
@@ -99,7 +105,9 @@ export default function CdDockMenu({
           <div className='bottom-menu-content'>
             {/* 새 음악 추가하기 */}
             <button
-              onClick={() => onSettingsChange('add')}
+              onClick={() => {
+                onSettingsChange('add');
+              }}
               className={`bottom-menu-icon group absolute bottom-[68px] ${
                 activeSettings === 'add'
                   ? 'bg-white'
@@ -119,7 +127,9 @@ export default function CdDockMenu({
 
             {/* 음악 삭제하기 */}
             <button
-              onClick={() => onSettingsChange('delete')}
+              onClick={() => {
+                onSettingsChange('delete');
+              }}
               className={`bottom-menu-icon group absolute bottom-[138px] ${
                 activeSettings === 'delete'
                   ? 'bg-white'

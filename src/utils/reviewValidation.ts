@@ -1,4 +1,4 @@
-import { BookReviewData } from '@/types/book';
+import { BookReviewData, ReviewType } from '@/types/book';
 
 /**
  * 서평 데이터의 유효성을 검사합니다.

@@ -144,11 +144,13 @@ export default function CdPlayer({
           />
 
           {/* 중앙 그룹: 재생 버튼*/}
-          <MiddleGroup
-            cdStateChangeEvent={cdStateChangeEvent}
-            cdReady={cdReady}
-            handleOnOffCd={handleOnOffCd}
-          />
+          <div>
+            <MiddleGroup
+              cdStateChangeEvent={cdStateChangeEvent}
+              cdReady={cdReady}
+              handleOnOffCd={handleOnOffCd}
+            />
+          </div>
           {/* 오른쪽 그룹: 부가 기능 */}
           <RightGroup
             cdReady={cdReady}

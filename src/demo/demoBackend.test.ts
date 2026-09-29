@@ -49,6 +49,28 @@ test('prioritizes forest and marine rooms in the first hive ring', () => {
   );
 });
 
+test('starts every demo room with both bookshelf and CD rack visible', () => {
+  const userIds = [
+    101,
+    ...demoBackend.getFollowing().housemates.map(({ userId }) => userId),
+  ];
+
+  for (const userId of userIds) {
+    assert.deepEqual(
+      demoBackend
+        .getRoom(userId)
+        .furnitures.map(({ furnitureType, isVisible }) => ({
+          furnitureType,
+          isVisible,
+        })),
+      [
+        { furnitureType: 'BOOKSHELF', isVisible: true },
+        { furnitureType: 'CD_RACK', isVisible: true },
+      ],
+    );
+  }
+});
+
 test('returns only the top ten rankings with 보아 in first place', () => {
   const ranking = demoBackend.getRanking();
 
@@ -72,6 +94,32 @@ test('returns seeded books for the demo bookshelf', () => {
 
   assert.ok(bookshelf.count > 0);
   assert.equal(bookshelf.myBooks.length, bookshelf.count);
+});
+
+test('keeps book details and reviews only in the demo runtime', () => {
+  const book = demoBackend.getBookDetail(801);
+  assert.equal(book.title, '아몬드');
+  assert.equal(demoBackend.getBookReview(801), null);
+
+  const review = demoBackend.saveBookReview(801, {
+    title: '천천히 마음을 여는 이야기',
+    quote: '마음은 눈에 보이지 않는다.',
+    takeaway: '다른 사람의 감정을 더 살펴보고 싶어졌다.',
+    motivate: '',
+    topic: '',
+    freeFormText: '',
+    coverColor: 'BLUE',
+  });
+
+  assert.equal(review.title, '천천히 마음을 여는 이야기');
+  assert.match(review.writeDateTime, /^\d{4}-\d{2}-\d{2}T/);
+  assert.equal(
+    demoBackend.getBookReview(801)?.quote,
+    '마음은 눈에 보이지 않는다.',
+  );
+
+  demoBackend.deleteBookReview(801);
+  assert.equal(demoBackend.getBookReview(801), null);
 });
 
 test('adds a CD to the current demo-session rack', () => {

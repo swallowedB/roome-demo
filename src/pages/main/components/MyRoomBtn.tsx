@@ -2,7 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import MyRoomIcon from '@assets/main/myroom-icon.svg';
 import { navigateToRoom } from '@/demo/demoEntry';
 
-export default function MyRoom({ user }: { user: { userId: number } }) {
+export default function MyRoom({
+  user,
+}: {
+  user: { userId: number };
+}) {
   const navigate = useNavigate();
 
   const handleClick = () => {

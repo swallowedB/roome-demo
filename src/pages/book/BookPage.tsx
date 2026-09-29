@@ -14,6 +14,7 @@ const BookPage = () => {
   const showToast = useToastStore((state) => state.showToast);
   const [hasReview, setHasReview] = useState(false);
   const [reviewData, setReviewData] = useState<BookReviewData | null>(null);
+  const [reviewRevision, setReviewRevision] = useState(0);
   const [bookInfo, setBookInfo] = useState<{
     title: string;
     author: string;
@@ -95,7 +96,15 @@ const BookPage = () => {
     };
 
     fetchData();
-  }, [bookId, isMyReview, isEditMode, navigate, showToast, userId]);
+  }, [
+    bookId,
+    isMyReview,
+    isEditMode,
+    navigate,
+    reviewRevision,
+    showToast,
+    userId,
+  ]);
 
   if (isLoading || !bookInfo) return <Loading />;
 
@@ -113,6 +122,7 @@ const BookPage = () => {
         genreNames={bookInfo.genreNames}
         publishedDate={bookInfo.publishedDate}
         imageUrl={bookInfo.imageUrl}
+        onComplete={() => setReviewRevision((revision) => revision + 1)}
       />
     );
   }

@@ -8,7 +8,6 @@ import { bookAPI } from '@apis/book';
 import ModalBackground from '@components/ModalBackground';
 import { BookCaseListType } from '@/types/book';
 import Loading from '@components/Loading';
-import AnimationGuide from '@components/AnimationGuide';
 import { useToastStore } from '@/store/useToastStore';
 import { useUserStore } from '@/store/useUserStore';
 import {
@@ -25,7 +24,6 @@ const BookCasePage = () => {
   const [dataListItems, setDataListItems] = useState<DataListInfo[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [isGuideOpen, setIsGuideOpen] = useState(true);
 
   // 도서 추가 추적
   const { startFeatureTracking, trackFeatureCompletion } =
@@ -108,16 +106,6 @@ const BookCasePage = () => {
       });
     }
   }, [isLoading]);
-
-  useEffect(() => {
-    if (isGuideOpen) {
-      const timer = setTimeout(() => {
-        setIsGuideOpen(false);
-      }, 2500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isGuideOpen]);
 
   const handleDragStart = (clientX: number, clientY: number) => {
     setIsDragging(true);
@@ -307,14 +295,6 @@ const BookCasePage = () => {
               );
             }
           }}
-        />
-      )}
-
-      {isGuideOpen && (
-        <AnimationGuide
-          titleText='드래그로 책장을 이동할 수 있습니다.'
-          subText='마우스를 이용해 책장을 이동해보세요.'
-          onClose={() => setIsGuideOpen(false)}
         />
       )}
 

@@ -172,6 +172,8 @@ export const bookAPI = {
 }
    */
   getBookDetail: async (myBookId: string) => {
+    if (isDemoMode) return demoBackend.getBookDetail(Number(myBookId));
+
     const response = await axiosInstance.get(`/${API_URL}/mybooks/${myBookId}`);
     return response.data;
   },
@@ -196,6 +198,8 @@ export const bookAPI = {
    * // // console.log(review);
    */
   getReview: async (myBookId: string) => {
+    if (isDemoMode) return demoBackend.getBookReview(Number(myBookId));
+
     const response = await axiosInstance.get(
       `/${API_URL}/mybooks/${myBookId}/review`,
     );
@@ -229,6 +233,10 @@ export const bookAPI = {
    */
 
   addReview: async (myBookId: string, review: ReviewType) => {
+    if (isDemoMode) {
+      return demoBackend.saveBookReview(Number(myBookId), review);
+    }
+
     const response = await axiosInstance.post(
       `/${API_URL}/mybooks/${myBookId}/review`,
       review,
@@ -243,6 +251,10 @@ export const bookAPI = {
    * @returns
    */
   updateReview: async (myBookId: string, review: ReviewType) => {
+    if (isDemoMode) {
+      return demoBackend.saveBookReview(Number(myBookId), review);
+    }
+
     const response = await axiosInstance.patch(
       `/${API_URL}/mybooks/${myBookId}/review`,
       review,
@@ -256,6 +268,8 @@ export const bookAPI = {
    * @returns
    */
   deleteReview: async (myBookId: string) => {
+    if (isDemoMode) return demoBackend.deleteBookReview(Number(myBookId));
+
     const response = await axiosInstance.delete(
       `/${API_URL}/mybooks/${myBookId}/review`,
     );
@@ -269,6 +283,8 @@ export const bookAPI = {
    * @returns
    */
   upgradeBookLevel: async (userId: string) => {
+    if (isDemoMode) return { roomId: Number(userId), upgraded: false };
+
     const response = await axiosInstance.post(
       `/${API_URL}/rooms/${userId}/furniture/bookshelf/upgrade`,
     );

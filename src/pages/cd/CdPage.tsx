@@ -128,7 +128,6 @@ export default function CdPage() {
       <section
         className='flex flex-col items-center justify-center gap-10 md:gap-1
                         min-h-[100vh] px-4 py-10 '>
-        {/* Control Bar  */}
         <div className='w-full sm:w-[80%] lg:w-[70%] max-w-md h-10'>
           <CdControlBar
             onTabClick={handleTabClick}
@@ -152,7 +151,7 @@ export default function CdPage() {
 
         {/* 재생바 */}
 
-        <div className='w-full sm:w-[70%] md:w-[40%] '>
+        <div className='w-full sm:w-[70%] md:w-[40%]'>
           <CdPlayer
             cdInfo={cdInfo}
             setCdPlaying={onSetCdPlaying}
